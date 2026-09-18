@@ -3638,8 +3638,8 @@ header.site-header nav.navbar,
       rgba(33, 94, 97, 0.55) 40%,
       rgba(29, 33, 40, 0.85) 100%
     ),
-    url("/GBI_Getsemani/Resource/ksushlapush-background-6556413_1920.jpg")
-      center/cover no-repeat;
+    url("./Resource/ksushlapush-background-6556413_1920.jpg") center/cover
+      no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -3908,7 +3908,7 @@ section.ministry-section,
       rgba(26, 46, 40, 0.65) 50%,
       rgba(13, 31, 26, 0.85) 100%
     ),
-    url("/GBI_Getsemani/Resource/Event/LUP_4564.JPG") center/cover no-repeat !important;
+    url("./Resource/Event/LUP_4564.JPG") center/cover no-repeat !important;
   background-size: cover !important;
   background-attachment: scroll !important; /* IKUT SCROLL */
   background-blend-mode: normal !important;
@@ -6060,7 +6060,7 @@ section.ministry-section::before {
       rgba(33, 94, 97, 0.7) 50%,
       rgba(29, 33, 40, 0.9) 100%
     ),
-    url("/GBI_Getsemani/Resource/Event/LUP_8538.JPG") center/cover no-repeat !important;
+    url("./Resource/Event/LUP_8538.JPG") center/cover no-repeat !important;
   background-blend-mode: normal !important;
 }
 
