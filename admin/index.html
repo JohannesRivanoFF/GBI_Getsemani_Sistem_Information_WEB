@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin - GBI Getsemani</title>
+  <link rel="stylesheet" href="admin.css">
+  <link rel="icon" href="../Resource/logo (1).png" type="image/png">
+</head>
+<body>
+
+  <!-- ===== LOGIN OVERLAY ===== -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+      <img src="../Resource/logo (1).png" alt="GBI Getsemani" class="login-logo" onerror="this.style.display='none'">
+      <h2>Admin GBI Getsemani</h2>
+      <p>Masuk untuk mengelola dokumentasi kegiatan dan khotbah terbaru</p>
+      
+      <div id="loginError" style="display:none; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 16px; font-size: 0.88rem;"></div>
+
+      <form id="loginForm">
+        <div class="form-group" style="text-align: left;">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" class="form-control" placeholder="Contoh: admin" required autofocus value="admin">
+        </div>
+        <div class="form-group" style="text-align: left; margin-bottom: 24px;">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password" required value="admin123">
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          Masuk ke Panel Admin →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN HEADER ===== -->
+  <header class="admin-header">
+    <div class="header-container">
+      <a href="index.html" class="brand-wrapper">
+        <img src="../Resource/logo (1).png" alt="Logo" class="brand-logo-img" onerror="this.style.display='none'">
+        <div>
+          <span class="brand-title">GBI Getsemani</span>
+          <span class="brand-badge">Admin CMS</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="../index.html" target="_blank" class="btn-ghost">
+          🌐 Lihat Website Utama ↗
+        </a>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">
+          Halo, <strong id="userDisplay" style="color: #fff;">Admin</strong>
+        </span>
+        <button id="btnLogout" class="btn-danger-ghost">
+          Keluar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTAINER ===== -->
+  <main class="admin-container">
+    <!-- Tab Navigation -->
+    <nav class="admin-nav-tabs">
+      <button class="tab-btn active" id="tabKegiatanBtn">
+        📸 Dokumentasi Kegiatan
+      </button>
+      <button class="tab-btn" id="tabKhotbahBtn">
+        🎬 Khotbah Terbaru &amp; Video
+      </button>
+    </nav>
+
+    <!-- ===== SECTION 1: KEGIATAN ===== -->
+    <section id="tabKegiatanSection">
+      <div class="section-toolbar">
+        <div class="section-info">
+          <h2>Manajemen Dokumentasi Kegiatan</h2>
+          <p>Ubah foto, judul, dan deskripsi kegiatan yang ditampilkan pada halaman utama website.</p>
+        </div>
+        <button class="btn-primary" onclick="openAddKegiatan()">
+          + Tambah Kegiatan Baru
+        </button>
+      </div>
+
+      <div class="items-grid" id="kegiatanGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2: KHOTBAH ===== -->
+    <section id="tabKhotbahSection" style="display: none;">
+      <div class="section-toolbar">
+        <div class="section-info">
+          <h2>Manajemen Khotbah Terbaru</h2>
+          <p>Kelola video khotbah, ganti tautan YouTube, ganti thumbnail, serta perbarui pembicara dan judul khotbah.</p>
+        </div>
+        <button class="btn-primary" onclick="openAddKhotbah()">
+          + Tambah Khotbah Baru
+        </button>
+      </div>
+
+      <div class="items-grid" id="khotbahGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== MODAL KEGIATAN ===== -->
+  <div class="modal-overlay" id="modalKegiatan">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalKegiatanTitle">Tambah Dokumentasi Kegiatan</h3>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formKegiatan">
+        <div class="modal-body">
+          <input type="hidden" id="kegiatanId">
+
+          <div class="form-group">
+            <label for="kegiatanTitle">Judul Kegiatan *</label>
+            <input type="text" id="kegiatanTitle" class="form-control" placeholder="Contoh: Ibadah Minggu Raya" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="kegiatanDate">Tanggal / Keterangan Waktu</label>
+              <input type="text" id="kegiatanDate" class="form-control" placeholder="Contoh: 26 Juli 2026">
+            </div>
+            <div class="form-group">
+              <label for="kegiatanShortDesc">Teks Singkat Hover (Overlay)</label>
+              <input type="text" id="kegiatanShortDesc" class="form-control" placeholder="Contoh: Ibadah raya setiap Minggu pukul 08.00 WIB">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="kegiatanDesc">Deskripsi Lengkap Kegiatan</label>
+            <textarea id="kegiatanDesc" class="form-control" rows="3" placeholder="Tuliskan ringkasan atau detail kegiatan..."></textarea>
+          </div>
+
+          <!-- Upload / URL Gambar -->
+          <div class="form-group">
+            <label>Gambar Kegiatan *</label>
+            <div class="image-upload-wrapper">
+              <div class="image-preview-box" id="kegiatanPreview">
+                <span class="no-img-text">Belum ada gambar</span>
+              </div>
+              <div class="upload-actions">
+                <label class="file-input-btn">
+                  📁 Unggah File Gambar
+                  <input type="file" id="kegiatanFile" class="file-input-hidden" accept="image/jpeg,image/png,image/webp">
+                </label>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">atau gunakan URL:</span>
+              </div>
+              <input type="text" id="kegiatanImage" class="form-control" placeholder="Path atau URL gambar, misal: ./Resource/IBADAH MINGGU.jpeg">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost modal-cancel-btn">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Kegiatan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL KHOTBAH ===== -->
+  <div class="modal-overlay" id="modalKhotbah">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalKhotbahTitle">Edit Khotbah Terbaru</h3>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <form id="formKhotbah">
+        <div class="modal-body">
+          <input type="hidden" id="khotbahId">
+
+          <div class="form-group">
+            <label for="khotbahTitle">Judul Khotbah *</label>
+            <input type="text" id="khotbahTitle" class="form-control" placeholder="Contoh: Bangkit dari Rasa Takut" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="khotbahPastor">Pembicara / Pengkhotbah</label>
+              <input type="text" id="khotbahPastor" class="form-control" placeholder="Contoh: Pdt. Michael Gunawan">
+            </div>
+            <div class="form-group">
+              <label for="khotbahSeries">Badge / Seri</label>
+              <input type="text" id="khotbahSeries" class="form-control" placeholder="Contoh: M|G atau Sunday Service">
+            </div>
+          </div>
+
+          <!-- YouTube Link -->
+          <div class="form-group">
+            <label for="khotbahYoutube">Link Video YouTube *</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="url" id="khotbahYoutube" class="form-control" placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..." required>
+              <button type="button" id="btnAutoThumb" class="btn-magic" title="Ambil thumbnail YouTube otomatis">
+                ✨ Ambil Thumbnail
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="khotbahDuration">Durasi Video</label>
+              <input type="text" id="khotbahDuration" class="form-control" placeholder="Contoh: 32:15">
+            </div>
+            <div class="form-group">
+              <label for="khotbahViews">Jumlah Views / Tayangan</label>
+              <input type="text" id="khotbahViews" class="form-control" placeholder="Contoh: 1,234 views">
+            </div>
+          </div>
+
+          <!-- Thumbnail Image -->
+          <div class="form-group">
+            <label>Gambar Thumbnail Video</label>
+            <div class="image-upload-wrapper">
+              <div class="image-preview-box" id="khotbahPreview">
+                <span class="no-img-text">Belum ada thumbnail</span>
+              </div>
+              <div class="upload-actions">
+                <label class="file-input-btn">
+                  📁 Unggah File Gambar
+                  <input type="file" id="khotbahFile" class="file-input-hidden" accept="image/jpeg,image/png,image/webp">
+                </label>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">atau URL:</span>
+              </div>
+              <input type="text" id="khotbahThumbnail" class="form-control" placeholder="URL thumbnail YouTube atau file lokal...">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost modal-cancel-btn">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Khotbah</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+    {
+        "id": "khotbah-1",
+        "title": "Bangkit dari Kolakutan",
+        "series": "M|G",
+        "pastor": "Pdt. Michael Gunawan",
+        "youtube_url": "https://www.youtube.com/live/8F5Fv7d058Y?si=9DZrzMlxm2wUpxPR",
+        "thumbnail": "./Resource/Screenshot 2026-07-26 233705.png",
+        "duration": "32:15",
+        "views": "1,234 views"
+    },
+    {
+        "id": "khotbah-2",
+        "title": "Iman yang Sejati",
+        "series": "M|G",
+        "pastor": "Pdt. Michael Gunawan",
+        "youtube_url": "https://www.youtube.com/live/700bdIuokbI?si=FEyWaPZPWwBuGF68",
+        "thumbnail": "./Resource/Screenshot 2026-07-26 233924.png",
+        "duration": "28:42",
+        "views": "987 views"
+    }
+]

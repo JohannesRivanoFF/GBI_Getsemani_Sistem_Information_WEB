@@ -1,0 +1,34 @@
+[
+    {
+        "id": "kegiatan-1",
+        "title": "Ibadah Minggu",
+        "image": "./Resource/IBADAH MINGGU.jpeg",
+        "short_desc": "Ibadah raya setiap Minggu pukul 08.00 WIB",
+        "description": "Ibadah raya setiap Minggu pukul 08.00 WIB, dihadiri 150 jemaat. Dilengkapi dengan live streaming.",
+        "date": "26 Juli 2026"
+    },
+    {
+        "id": "kegiatan-2",
+        "title": "Doa Pagi",
+        "image": "./Resource/DOA PAGI.jpeg",
+        "short_desc": "Doa bersama setiap pagi pukul 05.00 WIB",
+        "description": "Doa pagi bersama setiap Senin-Sabtu pukul 05.00 WIB di gereja dan live Zoom.",
+        "date": "26 Juli 2026"
+    },
+    {
+        "id": "kegiatan-3",
+        "title": "Doa Rabu",
+        "image": "./Resource/DOA RABU.jpeg",
+        "short_desc": "Persekutuan doa malam untuk keluarga dan kota",
+        "description": "Persekutuan doa malam setiap Rabu pukul 19.00 WIB, terbuka untuk seluruh jemaat.",
+        "date": "24 Juli 2026"
+    },
+    {
+        "id": "kegiatan-4",
+        "title": "KPW (Kebaktian Pemuda Wanita)",
+        "image": "./Resource/KPW.jpeg",
+        "short_desc": "Kebaktian Pemuda Wanita setiap Selasa",
+        "description": "Ibadah khusus wanita setiap Selasa pukul 19.00 WIB untuk pertumbuhan rohani dan persekutuan.",
+        "date": "22 Juli 2026"
+    }
+]
