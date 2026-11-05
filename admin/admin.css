@@ -27,7 +27,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
   background-color: var(--dark-bg);
   color: var(--text-main);
   line-height: 1.5;
@@ -405,21 +405,24 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 12, 16, 0.8);
+  background: rgba(10, 12, 16, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999;
   padding: 20px;
   opacity: 0;
   visibility: hidden;
-  transition: var(--transition);
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
-.modal-overlay.active {
+.modal-overlay.active,
+.modal-overlay.show {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .modal-card {
@@ -430,12 +433,13 @@ body {
   max-width: 620px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
   transform: translateY(20px) scale(0.97);
-  transition: var(--transition);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.modal-overlay.active .modal-card {
+.modal-overlay.active .modal-card,
+.modal-overlay.show .modal-card {
   transform: translateY(0) scale(1);
 }
 
@@ -716,3 +720,911 @@ textarea.form-control {
     padding: 16px 14px;
   }
 }
+
+/* ==========================================================================
+   UMKM Admin — Additional Styles
+   ========================================================================== */
+
+/* ---- Stats Bar ---- */
+.umkm-admin-stats {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.umkm-stat-item {
+  flex: 1;
+  min-width: 120px;
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: var(--transition);
+}
+
+.umkm-stat-item:hover {
+  border-color: rgba(255, 158, 32, 0.3);
+}
+
+.umkm-stat-num {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.umkm-stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.umkm-stat-aktif .umkm-stat-num  { color: #10b981; }
+.umkm-stat-hidden .umkm-stat-num { color: #f59e0b; }
+
+/* ---- Status Badge on Card ---- */
+.umkm-admin-status {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  z-index: 2;
+}
+
+.umkm-status-aktif {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.umkm-status-hidden {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ---- Toggle / Show button on card ---- */
+.btn-toggle-hide {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  flex: 1.5;
+}
+
+.btn-toggle-hide:hover {
+  background: #f59e0b;
+  color: #12151b;
+}
+
+.btn-toggle-show {
+  background: rgba(16, 185, 129, 0.12);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  flex: 1.5;
+}
+
+.btn-toggle-show:hover {
+  background: #10b981;
+  color: #fff;
+}
+
+/* ---- Status Toggle in Modal ---- */
+.umkm-status-toggle-wrap {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.umkm-toggle-btn {
+  flex: 1;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--dark-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 0.87rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.umkm-toggle-btn.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.umkm-toggle-btn:not(.active):hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   ADMIN DATA TABLES & FILTER BAR (PERSEMBAHAN & BAPTISAN)
+   ========================================================================== */
+.table-filter-bar {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.table-filter-bar .filter-group {
+  min-width: 170px;
+}
+
+.admin-table-container {
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  box-shadow: var(--shadow-card);
+}
+
+.admin-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.admin-data-table th {
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--dark-border);
+  white-space: nowrap;
+}
+
+.admin-data-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+  color: var(--text-main);
+}
+
+.admin-data-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.admin-data-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+
+.status-badge-pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge-verified {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge-rejected {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-badge-info {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.psb-jenis-badge {
+  background: rgba(255, 158, 32, 0.12);
+  color: var(--primary);
+  border: 1px solid rgba(255, 158, 32, 0.25);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.jadwal-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+}
+
+/* Image Thumbnail in Table */
+.table-img-thumb {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--dark-border);
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.table-img-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.table-img-thumb:hover img {
+  transform: scale(1.1);
+}
+
+.zoom-hover-icon {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.table-img-thumb:hover .zoom-hover-icon {
+  opacity: 1;
+}
+
+.pdf-thumb-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+/* Table WhatsApp Link */
+.table-wa-link {
+  color: #25d366;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s;
+}
+
+.table-wa-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
+
+/* Action Buttons */
+.action-btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.btn-action-sm {
+  border: none;
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-verify {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.btn-verify:hover {
+  background: #10b981;
+  color: #fff;
+}
+
+.btn-unverify {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.btn-unverify:hover {
+  background: #f59e0b;
+  color: #000;
+}
+
+.btn-reject {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-reject:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-detail {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.btn-detail:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-berkas {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-berkas:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Detail Modal Styles (Baptisan & Persembahan) */
+.bpt-detail-grid,
+.psb-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+  .bpt-detail-grid,
+  .psb-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bpt-detail-field label,
+.psb-detail-field label {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.bpt-detail-field .val,
+.psb-detail-field .val {
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.bpt-status-updater,
+.psb-status-updater {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-top: 10px;
+}
+
+/* File Attachment Card in Detail Modal */
+.detail-file-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.detail-file-preview {
+  position: relative;
+  background: #090d16;
+  min-height: 180px;
+  max-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.detail-file-preview img {
+  max-width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.detail-file-preview img:hover {
+  transform: scale(1.02);
+}
+
+.detail-file-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-file-name {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+/* Zoom Hover Icon on Thumbnails */
+.table-img-thumb {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--dark-border);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+}
+
+.table-img-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.table-img-thumb .zoom-hover-icon {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-size: 1rem;
+}
+
+.table-img-thumb:hover .zoom-hover-icon {
+  opacity: 1;
+}
+
+.table-file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.table-file-btn:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #fff;
+  border-color: #38bdf8;
+}
+
+
+/* ==========================================================================
+   PENGUMUMAN GEREJA MODULE STYLES (ADMIN)
+   ========================================================================== */
+.badge-pinned {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(255, 158, 32, 0.28));
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+.badge-normal {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 500;
+}
+
+.badge-cat {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-cat-ibadah { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+.badge-cat-pemuda { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+.badge-cat-baksos { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+.badge-cat-doa { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+.badge-cat-pelayanan { background: rgba(20, 184, 166, 0.18); color: #2dd4bf; border: 1px solid rgba(20, 184, 166, 0.35); }
+.badge-cat-umum { background: rgba(156, 163, 175, 0.18); color: #d1d5db; border: 1px solid rgba(156, 163, 175, 0.35); }
+
+/* Switch Toggle Component */
+.toggle-switch-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.toggle-switch-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 158, 32, 0.3);
+}
+.toggle-switch-info {
+  display: flex;
+  flex-direction: column;
+}
+.toggle-switch-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.toggle-switch-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.switch-control {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.switch-control input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.switch-track {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #2e3646;
+  transition: .3s;
+  border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.switch-track:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: .3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.switch-control input:checked + .switch-track {
+  background: linear-gradient(135deg, #f59e0b, #ff9e20);
+  border-color: #ff9e20;
+  box-shadow: 0 0 14px rgba(255, 158, 32, 0.45);
+}
+.switch-control input:checked + .switch-track:before {
+  transform: translateX(22px);
+}
+
+/* Fast Pin Toggle in Table */
+.btn-pin-toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-muted);
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition);
+}
+.btn-pin-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+}
+.btn-pin-toggle.is-pinned {
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+}
+.btn-pin-toggle.is-pinned:hover {
+  background: rgba(245, 158, 11, 0.28);
+}
+
+/* ==========================================================================
+   NEW ADMIN UI ENHANCEMENTS
+   ========================================================================== */
+
+/* ---- Admin Header Status Indicator ---- */
+.admin-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 6px 14px;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 20px;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ---- User Profile Badge ---- */
+.admin-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--dark-border);
+  border-radius: 24px;
+  transition: var(--transition);
+}
+.admin-user-badge:hover {
+  background: rgba(255,255,255,0.09);
+}
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.user-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.user-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---- Tab Badge Counters ---- */
+.tab-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  line-height: 1;
+  transition: var(--transition);
+}
+.tab-btn.active .tab-count-badge,
+.tab-btn:hover .tab-count-badge {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #818cf8;
+}
+.tab-count-badge.tab-badge-alert {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+  animation: badge-pulse 1.8s ease-in-out infinite;
+}
+.tab-count-badge.tab-badge-info {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+}
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+/* ---- Toolbar Actions ---- */
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn-add-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+}
+.btn-add-new:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+}
+.btn-add-new:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* ---- Edit small button variant ---- */
+.btn-action-sm.btn-edit-sm {
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.28);
+  color: #fbbf24;
+}
+.btn-action-sm.btn-edit-sm:hover {
+  background: rgba(251, 191, 36, 0.22);
+  border-color: rgba(251, 191, 36, 0.5);
+}
+
+
+/* ---- Responsive on small screens ---- */
+@media (max-width: 640px) {
+  .admin-status-indicator { display: none; }
+  .admin-user-badge .user-meta { display: none; }
+  .admin-user-badge { padding: 4px; border-radius: 50%; }
+  .toolbar-actions { gap: 6px; }
+  .btn-add-new { padding: 8px 12px; font-size: 0.8rem; }
+  .tab-count-badge { display: none; }
+}
+
+/* ==========================================================================
+   ACTION BUTTON GROUP — INLINE COMPACT ROW
+   ========================================================================== */
+
+/* Force action-btn-group to always be flex/inline */
+.action-btn-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+/* Action column td — no wrapping */
+.admin-data-table td:last-child {
+  white-space: nowrap;
+  text-align: right;
+  vertical-align: middle;
+}
+
+/* ---- Pin button variant (for table) ---- */
+.btn-action-sm.btn-pin-sm {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-muted);
+  min-width: 32px;
+  justify-content: center;
+}
+.btn-action-sm.btn-pin-sm:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-main);
+}
+.btn-action-sm.btn-pin-sm.is-pinned {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+.btn-action-sm.btn-pin-sm.is-pinned:hover {
+  background: rgba(245, 158, 11, 0.25);
+}
+
+/* ---- Delete button override (icon-only = square) ---- */
+.btn-action-sm.btn-delete {
+  min-width: 32px;
+  justify-content: center;
+  padding: 6px 8px;
+}
+
+/* ---- btn-edit-sm: slight padding update ---- */
+.btn-action-sm.btn-edit-sm {
+  padding: 6px 11px;
+}
+
+/* Table section header (h2) consistent sizing */
+.section-info h2 {
+  font-size: 1.35rem;
+}
+

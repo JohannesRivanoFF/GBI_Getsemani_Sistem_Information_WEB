@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Persembahan Online — GBI Getsemani</title>
+  <meta name="description" content="Berikan persembahan, persepuluhan, dan kolekte secara online melalui QRIS atau transfer bank resmi ke GBI Getsemani." />
+  <link rel="icon" href="./Resource/logo (1).png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="modul.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER NAV ===== -->
+  <header class="modul-header">
+    <div class="modul-header-inner">
+      <a href="./index.html" class="modul-back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="m15 18-6-6 6-6"/></svg>
+        Kembali ke Website
+      </a>
+      <a href="./index.html" class="modul-brand">
+        <img src="./Resource/logo (1).png" alt="GBI Getsemani" onerror="this.style.display='none'" />
+        <span>GBI Getsemani</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="modul-hero">
+    <div class="modul-hero-glow modul-hero-glow--gold"></div>
+    <div class="modul-hero-glow modul-hero-glow--teal"></div>
+    <div class="modul-hero-content">
+      <span class="modul-eyebrow">💛 Pelayanan Kasih &amp; Persembahan</span>
+      <h1 class="modul-hero-title">Persembahan &amp; Kolekte Online</h1>
+      <p class="modul-hero-sub">
+        "Hendaklah masing-masing memberikan menurut kerelaan hatinya, jangan dengan sedih hati atau karena paksaan, sebab Allah mengasihi orang yang memberi dengan sukacita."
+        <br /><span style="color: var(--primary); font-style: normal; font-weight: 600;">— 2 Korintus 9:7</span>
+      </p>
+
+      <!-- Langkah Cepat -->
+      <div class="quick-steps-bar">
+        <div class="step-badge">
+          <span class="step-num">1</span>
+          <span>Pilih QRIS / Transfer Bank</span>
+        </div>
+        <div class="step-divider">→</div>
+        <div class="step-badge">
+          <span class="step-num">2</span>
+          <span>Lakukan Pembayaran</span>
+        </div>
+        <div class="step-divider">→</div>
+        <div class="step-badge">
+          <span class="step-num">3</span>
+          <span>Kirim Konfirmasi di Bawah</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="modul-main" id="main">
+
+    <!-- ===== SECTION 1: METODE PEMBAYARAN ===== -->
+    <section class="card-section" id="metode-pembayaran">
+      <h2 class="section-title">
+        <span class="section-icon">💳</span>
+        Pilihan Metode Pembayaran
+      </h2>
+
+      <div class="payment-grid">
+
+        <!-- KOLOM 1: QRIS -->
+        <div class="payment-card payment-card--qris">
+          <div class="payment-card-header">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span class="payment-method-badge">QRIS NASIONAL</span>
+              <span style="font-size: 0.8rem; color: #10b981; font-weight: 600;">✓ Bebas Biaya Admin</span>
+            </div>
+            <h3>Scan QR Code QRIS</h3>
+            <p>Dapat dibayar melalui semua aplikasi m-Banking (BCA, Mandiri, BRI, BNI) dan e-Wallet (GoPay, OVO, DANA, ShopeePay, LinkAja).</p>
+          </div>
+
+          <!-- Stand QRIS -->
+          <div class="qris-display-frame">
+            <div class="qris-inner-box" id="qrisInnerBox" onclick="openZoomQrisModal()">
+              <img
+                src="./Resource/qris-gbi-getsemani.jpg"
+                alt="QRIS GBI Getsemani"
+                class="qris-img"
+                id="qrisImageElement"
+                onerror="this.src='./Resource/logo (1).png'"
+              />
+              <div class="qris-hover-hint">
+                <span>🔍 Klik untuk Memperbesar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="qris-btn-actions">
+            <button type="button" class="btn-qris btn-qris--zoom" onclick="openZoomQrisModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+              Perbesar QRIS
+            </button>
+            <a href="./Resource/qris-gbi-getsemani.jpg" download="QRIS-GBI-Getsemani.jpg" class="btn-qris btn-qris--dl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Unduh Gambar
+            </a>
+          </div>
+
+          <div class="qris-tips">
+            <span style="font-size: 1.1rem;">💡</span>
+            <span>Buka aplikasi m-Banking atau dompet digital Anda, pilih menu <strong>QRIS</strong>, lalu scan kode QR di atas atau gunakan gambar yang telah diunduh.</span>
+          </div>
+        </div>
+
+        <!-- KOLOM 2: REKENING BANK -->
+        <div class="payment-card payment-card--bank">
+          <div class="payment-card-header">
+            <span class="payment-method-badge" style="background: #2563eb;">TRANSFER BANK RESMI</span>
+            <h3>Nomor Rekening Gereja</h3>
+            <p>Silakan melakukan transfer ke salah satu rekening operasional resmi GBI Getsemani di bawah ini:</p>
+          </div>
+
+          <div class="bank-list">
+
+            <!-- Rekening 1: BCA -->
+            <div class="bank-item">
+              <div class="bank-info">
+                <div class="bank-logo-badge bank-logo-badge--bca">BCA</div>
+                <div class="bank-meta">
+                  <span class="bank-name">Bank Central Asia (BCA)</span>
+                  <span class="bank-number" id="rekValBca">1234567890</span>
+                  <span class="bank-holder">a.n. GBI GETSEMANI KEDIRI</span>
+                </div>
+              </div>
+              <button type="button" class="btn-copy-rek" onclick="copyNomorRek('1234567890', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Salin</span>
+              </button>
+            </div>
+
+            <!-- Rekening 2: Mandiri -->
+            <div class="bank-item">
+              <div class="bank-info">
+                <div class="bank-logo-badge bank-logo-badge--mandiri">MDR</div>
+                <div class="bank-meta">
+                  <span class="bank-name">Bank Mandiri</span>
+                  <span class="bank-number" id="rekValMdr">1400111222333</span>
+                  <span class="bank-holder">a.n. GBI GETSEMANI KEDIRI</span>
+                </div>
+              </div>
+              <button type="button" class="btn-copy-rek" onclick="copyNomorRek('1400111222333', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Salin</span>
+              </button>
+            </div>
+
+            <!-- Rekening 3: BRI -->
+            <div class="bank-item">
+              <div class="bank-info">
+                <div class="bank-logo-badge bank-logo-badge--bri">BRI</div>
+                <div class="bank-meta">
+                  <span class="bank-name">Bank Rakyat Indonesia (BRI)</span>
+                  <span class="bank-number" id="rekValBri">001201002345678</span>
+                  <span class="bank-holder">a.n. GBI GETSEMANI KEDIRI</span>
+                </div>
+              </div>
+              <button type="button" class="btn-copy-rek" onclick="copyNomorRek('001201002345678', this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Salin</span>
+              </button>
+            </div>
+
+          </div>
+
+          <div class="bank-security-notice">
+            <span style="font-size: 1.1rem;">🔒</span>
+            <span>Semua rekening di atas terdaftar resmi atas nama yayasan / gereja. Pastikan nama penerima <strong>GBI GETSEMANI KEDIRI</strong> sebelum menyelesaikan transfer.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== SECTION 2: FORMULIR KONFIRMASI ===== -->
+    <section class="card-section" id="form-konfirmasi">
+      <div class="section-header-box">
+        <h2 class="section-title" style="border: none; padding: 0; margin-bottom: 6px;">
+          <span class="section-icon">✍️</span>
+          Formulir Konfirmasi Persembahan
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.92rem;">
+          Setelah menyelesaikan transfer bank atau scan QRIS, mohon konfirmasi data pembayaran Anda melalui formulir di bawah ini untuk pencatatan dan verifikasi pastoral.
+        </p>
+      </div>
+
+      <div id="psb-alert-error" class="form-alert form-alert--error"></div>
+
+      <!-- State Sukses -->
+      <div id="psb-success" class="success-state" style="display: none;">
+        <div class="success-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="36" height="36">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="success-title">Puji Tuhan, Konfirmasi Terkirim!</h3>
+        <p class="success-desc" id="psb-success-msg">
+          Terima kasih atas persembahan kasih Anda. Tim administrasi gereja akan memverifikasi persembahan ini dalam 1×24 jam. Kiranya Tuhan senantiasa memberkati dan melipatgandakan taburan Anda.
+        </p>
+        <button type="button" class="btn-secondary-modul" onclick="resetFormPersembahan()">
+          + Kirim Konfirmasi Persembahan Lain
+        </button>
+      </div>
+
+      <!-- Formulir Utama -->
+      <form id="formPersembahan" novalidate>
+        <div class="form-grid">
+
+          <!-- Nama Pengirim -->
+          <div class="form-group">
+            <label class="form-label" for="psbNama">
+              Nama Lengkap Pengirim <span class="req">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="psbNama" 
+              name="nama" 
+              class="form-control" 
+              placeholder="Contoh: Stefanus Hartono (sesuai rekening)" 
+              required 
+            />
+            <span class="form-hint">Atau cantumkan nama keluarga/jemaat.</span>
+          </div>
+
+          <!-- Jenis Persembahan -->
+          <div class="form-group">
+            <label class="form-label" for="psbJenis">
+              Jenis Persembahan <span class="req">*</span>
+            </label>
+            <select id="psbJenis" name="jenis" class="form-control" required>
+              <option value="">-- Pilih Jenis Persembahan --</option>
+              <option value="Kolekte">🎁 Kolekte Ibadah Raya</option>
+              <option value="Persepuluhan">✝️ Persepuluhan</option>
+              <option value="Pembangunan">🏗️ Dana Pembangunan Gedung</option>
+              <option value="Ucapan Syukur">🌺 Persembahan Ucapan Syukur</option>
+              <option value="Misi">✈️ Dana Misi &amp; Sosial Jemaat</option>
+              <option value="Lainnya">📦 Persembahan Lainnya</option>
+            </select>
+          </div>
+
+          <!-- Nominal Persembahan -->
+          <div class="form-group">
+            <label class="form-label" for="psbNominal">
+              Nominal Persembahan <span class="req">*</span>
+            </label>
+            <div class="input-icon-wrap">
+              <span class="input-prefix">Rp</span>
+              <input 
+                type="text" 
+                id="psbNominal" 
+                name="nominal" 
+                class="form-control form-control--with-prefix" 
+                placeholder="0" 
+                inputmode="numeric" 
+                required 
+              />
+            </div>
+            <span class="form-hint">Contoh: 100.000 (otomatis diformat).</span>
+          </div>
+
+          <!-- Catatan / Doa -->
+          <div class="form-group">
+            <label class="form-label" for="psbCatatan">
+              Catatan Khusus / Permohonan Doa (Opsional)
+            </label>
+            <input 
+              type="text" 
+              id="psbCatatan" 
+              name="catatan" 
+              class="form-control" 
+              placeholder="Misal: Persepuluhan Oktober, syukur ultah pernikahan" 
+            />
+            <span class="form-hint">Catatan ini akan diteruskan ke tim doa pastoral.</span>
+          </div>
+
+          <!-- Upload Bukti Transfer -->
+          <div class="form-group form-grid--full">
+            <label class="form-label">
+              Upload Bukti Transfer / Screenshot QRIS <span class="req">*</span>
+            </label>
+            <div class="file-drop-area" id="psbDropArea">
+              <input type="file" id="psbFileInput" accept="image/jpeg,image/png,image/webp,application/pdf" style="display: none;" />
+              <input type="hidden" id="psbBuktiUrl" name="bukti_url" />
+
+              <div class="file-drop-content" id="psbDropContent">
+                <span class="file-drop-icon">📷</span>
+                <span class="file-drop-title">Klik atau seret screenshot / foto resi transfer ke sini</span>
+                <span class="file-drop-sub">Format JPG, PNG, atau PDF (Ukuran maksimal 8 MB)</span>
+              </div>
+
+              <!-- Preview State -->
+              <div id="psbFilePreview" class="file-preview-mini" style="display: none;">
+                <div class="file-preview-info">
+                  <span style="font-size: 1.4rem;">🧾</span>
+                  <div>
+                    <div class="file-preview-name" id="psbFileName">bukti_transfer.jpg</div>
+                    <span style="font-size: 0.76rem; color: #10b981; font-weight: 600;">✓ Berkas siap diunggah</span>
+                  </div>
+                </div>
+                <button type="button" class="btn-remove-file" onclick="removeBuktiTransfer(event)" title="Hapus berkas">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Kirim -->
+          <div class="form-group form-grid--full">
+            <button type="submit" class="btn-submit-modul" id="btnSubmitPersembahan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              Kirim Konfirmasi Persembahan
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ===== MODAL ZOOM QRIS ===== -->
+  <div class="qris-modal" id="modalZoomQris" onclick="closeZoomQrisModal(event)">
+    <div class="qris-modal-content" onclick="event.stopPropagation()">
+      <button type="button" class="modal-close-btn" onclick="closeZoomQrisModal()" aria-label="Tutup">&times;</button>
+      <div style="text-align: center; margin-bottom: 12px;">
+        <span style="background: #ff5722; color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 4px;">QRIS RESMI</span>
+        <h3 style="color: #091e28; font-size: 1.25rem; font-weight: 800; margin-top: 6px;">GBI GETSEMANI KEDIRI</h3>
+      </div>
+      <img src="./Resource/qris-gbi-getsemani.jpg" alt="QRIS GBI Getsemani" class="qris-modal-img" />
+      <p style="color: #64748b; font-size: 0.82rem; text-align: center; margin-top: 10px;">
+        Scan barcode QRIS di atas melalui m-Banking atau e-Wallet kesayangan Anda.
+      </p>
+      <div style="margin-top: 14px; width: 100%;">
+        <a href="./Resource/qris-gbi-getsemani.jpg" download="QRIS-GBI-Getsemani.jpg" class="btn-qris btn-qris--zoom" style="width: 100%; text-decoration: none; justify-content: center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Unduh QRIS
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="modul-footer">
+    <p>&copy; 2026 GBI Getsemani Kediri. Semua Hak Dilindungi. Dilayani dengan kasih dan sukacita.</p>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ---- Salin Nomor Rekening ----
+    window.copyNomorRek = function(nomor, btn) {
+      if (!navigator.clipboard) {
+        const ta = document.createElement('textarea');
+        ta.value = nomor;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showCopyFeedback(btn);
+        return;
+      }
+      navigator.clipboard.writeText(nomor).then(() => {
+        showCopyFeedback(btn);
+      });
+    };
+
+    function showCopyFeedback(btn) {
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Tersalin!</span>
+      `;
+      btn.style.color = '#10b981';
+      btn.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      btn.style.background = 'rgba(16, 185, 129, 0.15)';
+      setTimeout(() => {
+        btn.innerHTML = origHtml;
+        btn.style.color = '';
+        btn.style.borderColor = '';
+        btn.style.background = '';
+      }, 2000);
+    }
+
+    // ---- Zoom QRIS Modal ----
+    const modalZoom = document.getElementById('modalZoomQris');
+    window.openZoomQrisModal = function() {
+      if (modalZoom) modalZoom.classList.add('show');
+    };
+    window.closeZoomQrisModal = function(e) {
+      if (!e || e.target === modalZoom || e.target.classList.contains('modal-close-btn')) {
+        if (modalZoom) modalZoom.classList.remove('show');
+      }
+    };
+
+    // ---- Format Rupiah Dinamis ----
+    const nomInput = document.getElementById('psbNominal');
+    nomInput.addEventListener('input', function(e) {
+      const raw = this.value.replace(/[^0-9]/g, '');
+      if (!raw) {
+        this.value = '';
+        return;
+      }
+      this.value = Number(raw).toLocaleString('id-ID');
+    });
+
+    // ---- Upload Bukti Transfer ----
+    const dropArea = document.getElementById('psbDropArea');
+    const fileInput = document.getElementById('psbFileInput');
+    const dropContent = document.getElementById('psbDropContent');
+    const previewEl = document.getElementById('psbFilePreview');
+    const fileNameEl = document.getElementById('psbFileName');
+    const buktiUrlEl = document.getElementById('psbBuktiUrl');
+    const alertErrEl = document.getElementById('psb-alert-error');
+
+    dropArea.addEventListener('click', () => fileInput.click());
+
+    ['dragenter', 'dragover'].forEach(ev => {
+      dropArea.addEventListener(ev, e => {
+        e.preventDefault();
+        dropArea.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+      dropArea.addEventListener(ev, e => {
+        e.preventDefault();
+        dropArea.classList.remove('drag-over');
+      });
+    });
+
+    dropArea.addEventListener('drop', e => {
+      if (e.dataTransfer.files.length) {
+        handleUploadFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        handleUploadFile(fileInput.files[0]);
+      }
+    });
+
+    async function handleUploadFile(file) {
+      hideAlert();
+      dropContent.innerHTML = `<span style="color: var(--primary); font-weight: 600;">⏳ Mengunggah ${file.name}...</span>`;
+
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('tipe', 'persembahan');
+
+      try {
+        const res = await fetch('./api/upload-publik.php', {
+          method: 'POST',
+          body: fd
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          buktiUrlEl.value = result.url;
+          fileNameEl.textContent = file.name;
+          dropContent.style.display = 'none';
+          previewEl.style.display = 'flex';
+        } else {
+          showFormError(result.message || 'Gagal mengupload bukti transfer.');
+          resetUploadState();
+        }
+      } catch (err) {
+        showFormError('Terjadi kesalahan jaringan saat upload bukti.');
+        resetUploadState();
+      }
+    }
+
+    function resetUploadState() {
+      dropContent.style.display = 'flex';
+      dropContent.innerHTML = `
+        <span class="file-drop-icon">📷</span>
+        <span class="file-drop-title">Klik atau seret screenshot / foto resi transfer ke sini</span>
+        <span class="file-drop-sub">Format JPG, PNG, atau PDF (Ukuran maksimal 8 MB)</span>
+      `;
+      previewEl.style.display = 'none';
+      buktiUrlEl.value = '';
+    }
+
+    window.removeBuktiTransfer = function(e) {
+      e.stopPropagation();
+      fileInput.value = '';
+      resetUploadState();
+    };
+
+    function showFormError(msg) {
+      alertErrEl.textContent = msg;
+      alertErrEl.style.display = 'block';
+      alertErrEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function hideAlert() {
+      alertErrEl.style.display = 'none';
+    }
+
+    // ---- Form Submission ----
+    const form = document.getElementById('formPersembahan');
+    const submitBtn = document.getElementById('btnSubmitPersembahan');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const nama    = document.getElementById('psbNama').value.trim();
+      const jenis   = document.getElementById('psbJenis').value;
+      const nomStr  = nomInput.value.replace(/[^0-9]/g, '');
+      const nominal = parseInt(nomStr || '0');
+      const catatan = document.getElementById('psbCatatan').value.trim();
+      const bukti   = buktiUrlEl.value;
+
+      if (!nama || !jenis || nominal <= 0) {
+        showFormError('Nama pengirim, jenis persembahan, dan nominal wajib diisi.');
+        return;
+      }
+      if (!bukti) {
+        showFormError('Harap lampirkan bukti transfer atau screenshot QRIS Anda.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '⏳ Mengirim Konfirmasi...';
+
+      try {
+        const payload = {
+          action: 'submit',
+          nama,
+          jenis,
+          nominal,
+          catatan,
+          bukti_url: bukti
+        };
+
+        const res = await fetch('./api/persembahan.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.ok && result.success) {
+          document.getElementById('psb-success-msg').textContent = result.message;
+          form.style.display = 'none';
+          document.getElementById('psb-success').style.display = 'flex';
+          document.getElementById('psb-success').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          showFormError(result.message || 'Gagal mengirim konfirmasi. Silakan coba kembali.');
+        }
+      } catch (err) {
+        showFormError('Terjadi kesalahan jaringan. Pastikan koneksi internet stabil.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          Kirim Konfirmasi Persembahan
+        `;
+      }
+    });
+
+    window.resetFormPersembahan = function() {
+      form.reset();
+      resetUploadState();
+      form.style.display = 'block';
+      document.getElementById('psb-success').style.display = 'none';
+    };
+  </script>
+</body>
+</html>

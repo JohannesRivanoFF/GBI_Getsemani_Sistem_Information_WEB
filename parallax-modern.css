@@ -1,0 +1,1205 @@
+/* ==========================================================================
+   GBI GETSEMANI — MODERN PARALLAX & SEGMENTED PILL DOCK NAVIGATION
+   Inspired by Apple VisionOS / Linear / Spline / Modern 2026 Web Design Trends
+   ========================================================================== */
+
+:root {
+  --dock-bg: rgba(13, 16, 22, 0.82);
+  --dock-bg-scrolled: rgba(10, 12, 17, 0.94);
+  --dock-border: rgba(255, 255, 255, 0.08);
+  --dock-border-hover: rgba(255, 255, 255, 0.18);
+  --dock-pill-active: rgba(255, 255, 255, 0.09);
+  --dock-pill-hover: rgba(255, 255, 255, 0.05);
+  --dock-text-muted: #94a3b8;
+  --dock-text-active: #ffffff;
+  --dock-emerald: #10b981;
+  --dock-gold: #fbbf24;
+  --dock-blue: #38bdf8;
+  --dock-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --dock-shadow-scrolled: 0 24px 50px -10px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   1. FLOATING HEADER & SYMMETRICAL WRAPPER
+   -------------------------------------------------------------------------- */
+.site-header.parallax-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+  padding: 12px 42px 0 !important;
+  background: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none; /* Allows clicks through empty header padding */
+  transition: padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header.parallax-header.is-scrolled,
+.site-header.parallax-header.scrolled {
+  padding-top: 8px !important;
+}
+
+.site-header.parallax-header * {
+  box-sizing: border-box;
+}
+
+/* 3-Column Symmetrical Grid: Left (1fr), Center (auto), Right (1fr) */
+.dock-navbar-container {
+  display: grid;
+  grid-template-columns: minmax(230px, 1fr) auto minmax(230px, 1fr);
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 18px;
+  width: 100%;
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------------------------------
+   2. BRAND CAPSULE (Left Pill)
+   -------------------------------------------------------------------------- */
+.dock-brand-pill {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 300px;
+  height: 44px;
+  padding: 8px 18px;
+  border-radius: 22px;
+  background: rgba(10, 12, 17, 0.76);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--dock-border);
+  box-shadow: var(--dock-shadow);
+  text-decoration: none;
+  color: #ffffff;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.dock-brand-pill::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transition: left 0.6s ease;
+}
+
+.dock-brand-pill:hover::before {
+  left: 100%;
+}
+
+.dock-brand-pill:hover {
+  transform: translateY(-1px);
+  border-color: var(--dock-border-hover);
+  box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.82), 0 0 14px rgba(255, 255, 255, 0.04);
+}
+
+.dock-brand-logo {
+  display: block;
+  width: 242px;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.dock-brand-pill:hover .dock-brand-logo {
+  transform: scale(1.015);
+}
+
+.dock-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.dock-brand-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.dock-brand-name span {
+  color: var(--dock-gold);
+}
+
+.dock-brand-sub {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   3. FLOATING SEGMENTED PILL DOCK (Center Pill Capsule with Dropdowns)
+   -------------------------------------------------------------------------- */
+.dock-center-wrapper {
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Symmetrical Centered Version Tag 'v.1' */
+.dock-version-tag {
+  display: none;
+}
+
+.site-header.parallax-header.is-scrolled .dock-version-tag,
+.site-header.parallax-header.scrolled .dock-version-tag {
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  height: 0;
+  margin: 0;
+}
+
+/* The Outer Capsule Dock */
+.dock-capsule-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--dock-bg);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  min-height: 46px;
+  border-radius: 18px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 18px 42px -18px rgba(0, 0, 0, 0.86), inset 0 1px 0 rgba(255, 255, 255, 0.11);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header.parallax-header.is-scrolled .dock-capsule-bar,
+.site-header.parallax-header.scrolled .dock-capsule-bar {
+  background: var(--dock-bg-scrolled);
+  box-shadow: var(--dock-shadow-scrolled);
+  transform: translateY(-2px);
+}
+
+/* Specular Border Glare (tracks mouse position) */
+.dock-capsule-bar::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    180px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.35),
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.dock-capsule-bar:hover::before {
+  opacity: 1;
+}
+
+/* Active Gliding Pill Indicator (behind link items) */
+.dock-pill-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 4px 14px rgba(0, 0, 0, 0.42);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease;
+}
+
+/* Nav Menu Track inside Capsule */
+.dock-menu-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dock-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dock-item + .dock-item::before {
+  content: "";
+  width: 1px;
+  height: 22px;
+  margin: 0 3px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Individual Dock Link / Trigger */
+.dock-link {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  color: var(--dock-text-muted);
+  text-decoration: none;
+  border-radius: 13px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  transition:
+    color 0.22s ease,
+    background-color 0.22s ease,
+    transform 0.22s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.dock-link:hover {
+  color: #ffffff;
+  background-color: var(--dock-pill-hover);
+}
+
+.dock-link.active {
+  color: var(--dock-text-active);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20), 0 4px 12px rgba(0, 0, 0, 0.36);
+}
+
+.dock-link::after {
+  display: none !important;
+}
+
+/* Chevron Icon on Dropdown Triggers */
+.dock-chevron {
+  width: 12px;
+  height: 12px;
+  margin-left: 1px;
+  opacity: 0.6;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.dock-item:hover .dock-chevron,
+.dock-item.is-open .dock-chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   4. SLEEK ACRYLIC GLASS DROPDOWN MENUS
+   -------------------------------------------------------------------------- */
+.dock-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px) scale(0.96);
+  min-width: 340px;
+  background: rgba(13, 16, 22, 0.94);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 50px -10px rgba(0, 0, 0, 0.85),
+    0 0 1px 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  padding: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+
+/* Invisible Hover Bridge (prevents dropdown closing when cursor transitions) */
+.dock-dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 0;
+  right: 0;
+  height: 14px;
+}
+
+/* Show Dropdown on Hover or Active state */
+.dock-item:hover .dock-dropdown-menu,
+.dock-item:focus-within .dock-dropdown-menu,
+.dock-item.is-open .dock-dropdown-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.dropdown-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Individual Dropdown Item */
+.dropdown-item {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  padding: 10px 12px;
+  min-height: 58px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #cbd5e1;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.dropdown-item-icon {
+  display: flex;
+  grid-column: 1;
+  grid-row: 1;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dropdown-item-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dropdown-item:hover .dropdown-item-icon {
+  transform: scale(1.12);
+}
+
+.dropdown-item-content {
+  display: flex !important;
+  grid-column: 2;
+  grid-row: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.dropdown-item-title {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.25;
+  margin: 0;
+  white-space: normal;
+}
+
+.dropdown-item-desc {
+  display: block;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+/* Icon Glow Themes */
+.emerald-glow {
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.15);
+}
+.cube-glow {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.1);
+}
+.avatar-glow {
+  border-color: rgba(147, 197, 253, 0.3);
+  box-shadow: inset 0 0 12px rgba(147, 197, 253, 0.15);
+}
+.video-glow {
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: inset 0 0 12px rgba(239, 68, 68, 0.15);
+}
+.bell-glow {
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: inset 0 0 12px rgba(251, 191, 36, 0.15);
+}
+.heart-glow {
+  border-color: rgba(244, 63, 94, 0.3);
+  box-shadow: inset 0 0 12px rgba(244, 63, 94, 0.15);
+}
+.layers-glow {
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: inset 0 0 12px rgba(168, 85, 247, 0.15);
+}
+.store-glow {
+  border-color: rgba(34, 197, 94, 0.3);
+  box-shadow: inset 0 0 12px rgba(34, 197, 94, 0.15);
+}
+.pin-glow {
+  border-color: rgba(56, 189, 248, 0.3);
+  box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   5. BESPOKE ICONS & ACCENTS
+   -------------------------------------------------------------------------- */
+.dock-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+}
+
+.dock-icon-wrap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.dock-link:hover .dock-icon-wrap {
+  transform: scale(1.15);
+}
+
+/* Emerald Gem */
+.dock-icon-emerald svg {
+  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.45));
+}
+.dock-link.active .dock-icon-emerald svg,
+.dock-link:hover .dock-icon-emerald svg {
+  filter: drop-shadow(0 0 9px rgba(16, 185, 129, 0.85));
+}
+
+/* 3D Cube */
+.dock-icon-cube { color: #d1d5db; }
+.dock-link.active .dock-icon-cube,
+.dock-link:hover .dock-icon-cube {
+  color: #ffffff;
+  filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.3));
+}
+
+/* Heart */
+.dock-icon-heart { color: #f43f5e; }
+.dock-link.active .dock-icon-heart,
+.dock-link:hover .dock-icon-heart {
+  filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.6));
+}
+
+/* Gold Accent (Persembahan) */
+.dock-icon-gold { color: var(--dock-gold); }
+.dock-link-gold {
+  color: #fde68a !important;
+}
+.dock-link-gold:hover .dock-icon-gold,
+.dock-link-gold.active .dock-icon-gold {
+  filter: drop-shadow(0 0 9px rgba(251, 191, 36, 0.85));
+}
+
+/* Blue Accent (Baptisan) */
+.dock-icon-blue { color: var(--dock-blue); }
+.dock-link-blue {
+  color: #bae6fd !important;
+}
+.dock-link-blue:hover .dock-icon-blue,
+.dock-link-blue.active .dock-icon-blue {
+  filter: drop-shadow(0 0 9px rgba(56, 189, 248, 0.85));
+}
+
+/* --------------------------------------------------------------------------
+   6. RIGHT ACTIONS (Balanced Symmetrical WhatsApp Pill)
+   -------------------------------------------------------------------------- */
+.dock-actions-wrap {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dock-contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 18px;
+  border-radius: 18px;
+  background: rgba(10, 12, 17, 0.76);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--dock-border);
+  box-shadow: var(--dock-shadow);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.dock-wa-icon {
+  color: #25d366;
+  filter: drop-shadow(0 0 5px rgba(37, 211, 102, 0.4));
+  transition: transform 0.25s ease;
+}
+
+.dock-contact-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 211, 102, 0.4);
+  color: #ffffff;
+  box-shadow: 0 14px 30px -6px rgba(37, 211, 102, 0.25), 0 0 15px rgba(37, 211, 102, 0.15);
+}
+
+.dock-contact-pill:hover .dock-wa-icon {
+  transform: scale(1.15) rotate(6deg);
+}
+
+/* Mobile Toggle Hamburger */
+.dock-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 8px;
+  background: var(--dock-bg);
+  border: 1px solid var(--dock-border);
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: var(--dock-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+}
+
+.dock-nav-toggle span:not(.sr-only) {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dock-nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.dock-nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.dock-nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   7. MOBILE DRAWER (Hidden strictly on desktop)
+   -------------------------------------------------------------------------- */
+.dock-mobile-drawer {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .site-header.parallax-header {
+    padding: 12px 18px 0 !important;
+  }
+
+  .dock-navbar-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .dock-brand-pill {
+    width: min(255px, calc(100vw - 86px));
+    height: 42px;
+    padding: 8px 14px;
+  }
+
+  .dock-brand-logo {
+    width: min(210px, calc(100vw - 126px));
+  }
+
+  .dock-center-wrapper {
+    display: none !important; /* Hide center horizontal bar on mobile */
+  }
+
+  .dock-contact-pill {
+    display: none;
+  }
+
+  .dock-nav-toggle {
+    display: flex;
+  }
+
+  /* Mobile Dropdown Drawer */
+  .dock-mobile-drawer.is-open {
+    display: block !important;
+    position: fixed;
+    top: 72px;
+    left: 16px;
+    right: 16px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    background: rgba(12, 14, 18, 0.95);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    z-index: 1001;
+    pointer-events: auto;
+    animation: drawerSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .dock-mobile-drawer {
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  }
+
+  .mobile-nav-group {
+    margin-bottom: 14px;
+  }
+
+  .mobile-group-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 6px;
+    padding-left: 6px;
+  }
+
+  .mobile-group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .dock-mobile-drawer .dropdown-item {
+    display: grid !important;
+    grid-template-columns: 40px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .dock-mobile-drawer .dropdown-item-content {
+    display: flex !important;
+    grid-column: 2;
+    grid-row: 1;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dock-mobile-drawer .dropdown-item-icon {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .dock-mobile-drawer .dropdown-item-title {
+    white-space: normal;
+  }
+
+  .dock-mobile-drawer .dropdown-item-desc {
+    justify-self: start;
+    text-align: left;
+    max-width: none;
+  }
+
+  .dock-mobile-drawer .dropdown-item:hover,
+  .dock-mobile-drawer .dropdown-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7A. SMALL-SCREEN LAYOUT POLISH
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .site-header.parallax-header {
+    padding-top: max(10px, env(safe-area-inset-top)) !important;
+    padding-right: max(14px, env(safe-area-inset-right)) !important;
+    padding-left: max(14px, env(safe-area-inset-left)) !important;
+  }
+
+  .dock-brand-pill {
+    width: min(230px, calc(100vw - 82px));
+    height: 42px;
+    padding: 7px 12px;
+  }
+
+  .dock-brand-logo {
+    width: min(194px, calc(100vw - 112px));
+  }
+
+  .dock-navbar-container {
+    gap: 8px;
+  }
+
+  .dock-nav-toggle {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+  }
+
+  .dock-mobile-drawer.is-open {
+    top: calc(62px + env(safe-area-inset-top));
+    left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right));
+    max-height: calc(100dvh - 74px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .mobile-nav-group {
+    margin-bottom: 10px;
+  }
+
+  .dock-mobile-drawer .dropdown-item {
+    min-height: 52px;
+    padding: 8px 10px;
+  }
+
+  .hero {
+    min-height: auto;
+    gap: 28px;
+    padding: 112px 20px 64px;
+    background-position: 58% center;
+  }
+
+  .hero-title {
+    max-width: 14ch;
+    font-size: clamp(2.15rem, 10vw, 3rem);
+    letter-spacing: -0.04em;
+  }
+
+  .hero-copy {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .hero-media {
+    border-radius: 18px;
+  }
+
+  .section,
+  .khotbah-section,
+  .media-section,
+  .jadwal-section,
+  .ministry-section,
+  .gallery-section,
+  .contact-section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .section-heading {
+    margin-bottom: 32px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(1.65rem, 7vw, 2rem);
+  }
+
+  .khotbah-grid,
+  .ministry-grid,
+  .gallery-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .pengumuman-pinned-container {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .pengumuman-pinned-card,
+  .pinned-card-inner {
+    min-width: 0;
+  }
+
+  .contact-section {
+    gap: 20px;
+  }
+
+  .contact-card,
+  .contact-form {
+    min-width: 0;
+    padding: 22px 18px;
+  }
+
+  .wa-widget-wrapper {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  .wa-chat-box {
+    width: min(320px, calc(100vw - 28px));
+  }
+}
+
+@media (max-width: 360px) {
+  .hero {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .section,
+  .khotbah-section,
+  .media-section,
+  .jadwal-section,
+  .ministry-section,
+  .gallery-section,
+  .contact-section {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .hero-actions .btn {
+    padding-right: 18px;
+    padding-left: 18px;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@keyframes drawerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. MODERN PARALLAX TREND: 3D PERSPECTIVE TILT ACROSS COMPONENTS
+   -------------------------------------------------------------------------- */
+.parallax-tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.parallax-tilt-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--card-mouse-x, 50%) var(--card-mouse-y, 50%),
+    rgba(255, 255, 255, 0.12),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.parallax-tilt-card:hover::after {
+  opacity: 1;
+}
+
+.quick-info-card,
+.tentang-value-card,
+.next-service-banner,
+.schedule-card,
+.pastor-card,
+.khotbah-card,
+.pengumuman-card,
+.pengumuman-pinned-container,
+.ministry-grid article,
+.ministry-card,
+.gallery-grid figure,
+.gallery-item,
+.umkm-card,
+.contact-card {
+  position: relative;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.quick-info-card:hover,
+.tentang-value-card:hover,
+.next-service-banner:hover,
+.schedule-card:hover,
+.pastor-card:hover,
+.khotbah-card:hover,
+.pengumuman-card:hover,
+.ministry-grid article:hover,
+.ministry-card:hover,
+.gallery-grid figure:hover,
+.umkm-card:hover,
+.contact-card:hover {
+  box-shadow:
+    0 24px 50px -15px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(255, 158, 32, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   9. GBI GETSEMANI — MODERN SACRED PARALLAX ENTRANCE & SCROLL ENGINE
+   GPU Hardware Accelerated via Decoupled CSS Custom Properties
+   -------------------------------------------------------------------------- */
+:root {
+  --px-sacred-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --px-entrance-duration: 0.95s;
+}
+
+[data-parallax],
+[data-parallax-type] {
+  /* Internal Entrance CSS Variables */
+  --px-entrance-x: 0px;
+  --px-entrance-y: 0px;
+  --px-entrance-scale: 1;
+  --px-entrance-rot: 0deg;
+  --px-entrance-opacity: 0;
+  --px-entrance-blur: 8px;
+
+  /* Internal Continuous Parallax Scroll Variables (Updated via RAF Lerp) */
+  --px-scroll-x: 0px;
+  --px-scroll-y: 0px;
+  --px-scroll-scale: 1;
+  --px-scroll-rot: 0deg;
+
+  /* Internal Interactive 3D Perspective Tilt */
+  --px-tilt-rot-x: 0deg;
+  --px-tilt-rot-y: 0deg;
+  --px-tilt-scale: 1;
+
+  opacity: var(--px-entrance-opacity);
+  filter: blur(var(--px-entrance-blur));
+
+  transform: translate3d(
+    calc(var(--px-entrance-x) + var(--px-scroll-x)),
+    calc(var(--px-entrance-y) + var(--px-scroll-y)),
+    0
+  )
+  scale(calc(var(--px-entrance-scale) * var(--px-scroll-scale) * var(--px-tilt-scale)))
+  rotate(calc(var(--px-entrance-rot) + var(--px-scroll-rot)))
+  perspective(1000px)
+  rotateX(var(--px-tilt-rot-x))
+  rotateY(var(--px-tilt-rot-y));
+
+  will-change: transform, opacity, filter;
+  /* CRITICAL: ONLY transition opacity and filter in CSS. 
+     Transform is 100% GPU-interpolated via the JavaScript RAF Lerp loop.
+     This eliminates double-interpolation stutter and provides pure 120 FPS fluidity! */
+  transition: 
+    opacity 0.85s var(--px-sacred-ease),
+    filter 0.85s var(--px-sacred-ease);
+}
+
+/* Directional Entrance Variations */
+[data-parallax-type="fade-up"],
+[data-parallax="up"] {
+  --px-entrance-y: 52px;
+  --px-entrance-scale: 0.98;
+  --px-entrance-opacity: 0;
+  --px-entrance-blur: 8px;
+}
+
+[data-parallax-type="fade-down"],
+[data-parallax="down"] {
+  --px-entrance-y: -52px;
+  --px-entrance-scale: 0.98;
+  --px-entrance-opacity: 0;
+  --px-entrance-blur: 8px;
+}
+
+[data-parallax-type="slide-left"],
+[data-parallax="left"] {
+  --px-entrance-x: -56px;
+  --px-entrance-scale: 0.98;
+  --px-entrance-opacity: 0;
+  --px-entrance-blur: 8px;
+}
+
+[data-parallax-type="slide-right"],
+[data-parallax="right"] {
+  --px-entrance-x: 56px;
+  --px-entrance-scale: 0.98;
+  --px-entrance-opacity: 0;
+  --px-entrance-blur: 8px;
+}
+
+[data-parallax-type="zoom-in"],
+[data-parallax="zoom"] {
+  --px-entrance-scale: 0.92;
+  --px-entrance-opacity: 0;
+  --px-entrance-blur: 10px;
+}
+
+/* Active Revealed State */
+[data-parallax].is-revealed,
+[data-parallax-type].is-revealed {
+  --px-entrance-opacity: 1;
+  --px-entrance-blur: 0px;
+}
+
+/* Smart Specular Glare & 3D Interactive Lighting for Church Cards */
+.parallax-tilt-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-tilt-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    550px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px),
+    rgba(255, 158, 32, 0.14),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 4;
+}
+
+.parallax-tilt-card:hover::before {
+  opacity: 1;
+}
+
+/* Smart Counter-Floating Media Inside Cards */
+.schedule-card .schedule-details-inner,
+.khotbah-card .khotbah-content,
+.quick-info-card .quick-info-content {
+  transform: translate3d(0, var(--sub-scroll-y, 0px), 0);
+  will-change: transform;
+}
+
+[data-parallax-speed] {
+  will-change: transform;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax],
+  [data-parallax-type] {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+
+.parallax-ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.orb-gold {
+  background: radial-gradient(circle, #f59e0b 0%, rgba(217, 119, 6, 0.3) 60%, transparent 80%);
+}
+
+.orb-emerald {
+  background: radial-gradient(circle, #10b981 0%, rgba(5, 150, 105, 0.3) 60%, transparent 80%);
+}
+
+.orb-cyan {
+  background: radial-gradient(circle, #06b6d4 0%, rgba(8, 145, 178, 0.3) 60%, transparent 80%);
+}
+
+.section-heading {
+  position: relative;
+}
+
+.section-watermark {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.03);
+  letter-spacing: 0.15em;
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+
+

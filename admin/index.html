@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Admin - GBI Getsemani</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="admin.css">
   <link rel="icon" href="../Resource/logo (1).png" type="image/png">
 </head>
@@ -14,18 +17,18 @@
     <div class="login-card">
       <img src="../Resource/logo (1).png" alt="GBI Getsemani" class="login-logo" onerror="this.style.display='none'">
       <h2>Admin GBI Getsemani</h2>
-      <p>Masuk untuk mengelola dokumentasi kegiatan dan khotbah terbaru</p>
+      <p>Masuk untuk mengelola dokumentasi kegiatan, khotbah, warta, UMKM, persembahan, dan baptisan.</p>
       
       <div id="loginError" style="display:none; color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 16px; font-size: 0.88rem;"></div>
 
       <form id="loginForm">
         <div class="form-group" style="text-align: left;">
           <label for="loginUsername">Username</label>
-          <input type="text" id="loginUsername" class="form-control" placeholder="Contoh: admin" required autofocus value="admin">
+          <input type="text" id="loginUsername" class="form-control" placeholder="Masukkan username" required autofocus>
         </div>
         <div class="form-group" style="text-align: left; margin-bottom: 24px;">
           <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password" required value="admin123">
+          <input type="password" id="loginPassword" class="form-control" placeholder="Masukkan password" required>
         </div>
         <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
           Masuk ke Panel Admin →
@@ -46,12 +49,20 @@
       </a>
 
       <div class="header-actions">
-        <a href="../index.html" target="_blank" class="btn-ghost">
-          🌐 Lihat Website Utama ↗
+        <div class="admin-status-indicator" title="Sistem terhubung aktif ke database">
+          <span class="status-dot"></span>
+          <span>Sistem Aktif</span>
+        </div>
+        <a href="../index.html" target="_blank" class="btn-ghost btn-web-link">
+          🌐 Website Utama ↗
         </a>
-        <span style="font-size: 0.85rem; color: var(--text-muted);">
-          Halo, <strong id="userDisplay" style="color: #fff;">Admin</strong>
-        </span>
+        <div class="admin-user-badge">
+          <div class="user-avatar">👤</div>
+          <div class="user-meta">
+            <span class="user-role">Administrator</span>
+            <strong id="userDisplay" class="user-name">Admin</strong>
+          </div>
+        </div>
         <button id="btnLogout" class="btn-danger-ghost">
           Keluar
         </button>
@@ -64,10 +75,34 @@
     <!-- Tab Navigation -->
     <nav class="admin-nav-tabs">
       <button class="tab-btn active" id="tabKegiatanBtn">
-        📸 Dokumentasi Kegiatan
+        <span class="tab-icon">📸</span>
+        <span>Dokumentasi Kegiatan</span>
+        <span class="tab-count-badge" id="badgeKegiatan">0</span>
       </button>
       <button class="tab-btn" id="tabKhotbahBtn">
-        🎬 Khotbah Terbaru &amp; Video
+        <span class="tab-icon">🎬</span>
+        <span>Khotbah Terbaru</span>
+        <span class="tab-count-badge" id="badgeKhotbah">0</span>
+      </button>
+      <button class="tab-btn" id="tabPengumumanBtn">
+        <span class="tab-icon">📢</span>
+        <span>Warta Pengumuman</span>
+        <span class="tab-count-badge" id="badgePengumuman">0</span>
+      </button>
+      <button class="tab-btn" id="tabUmkmBtn">
+        <span class="tab-icon">🛍️</span>
+        <span>UMKM Jemaat</span>
+        <span class="tab-count-badge" id="badgeUmkm">0</span>
+      </button>
+      <button class="tab-btn" id="tabPersembahanBtn">
+        <span class="tab-icon">💰</span>
+        <span>Persembahan</span>
+        <span class="tab-count-badge tab-badge-alert" id="badgePersembahan">0</span>
+      </button>
+      <button class="tab-btn" id="tabBaptisanBtn">
+        <span class="tab-icon">🕊️</span>
+        <span>Pendaftaran Baptisan</span>
+        <span class="tab-count-badge tab-badge-info" id="badgeBaptisan">0</span>
       </button>
     </nav>
 
@@ -102,6 +137,281 @@
 
       <div class="items-grid" id="khotbahGrid">
         <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ===== SECTION 3: UMKM ===== -->
+    <section id="tabUmkmSection" style="display: none;">
+      <div class="section-toolbar">
+        <div class="section-info">
+          <h2>Manajemen UMKM Jemaat</h2>
+          <p>Tambah, edit, dan atur visibilitas usaha jemaat yang tampil di website publik.</p>
+        </div>
+        <button class="btn-primary" onclick="openAddUmkm()">
+          + Tambah UMKM Baru
+        </button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="umkm-admin-stats" id="umkmAdminStats">
+        <div class="umkm-stat-item">
+          <span class="umkm-stat-num" id="umkmStatTotal">0</span>
+          <span class="umkm-stat-label">Total UMKM</span>
+        </div>
+        <div class="umkm-stat-item umkm-stat-aktif">
+          <span class="umkm-stat-num" id="umkmStatAktif">0</span>
+          <span class="umkm-stat-label">Aktif Tampil</span>
+        </div>
+        <div class="umkm-stat-item umkm-stat-hidden">
+          <span class="umkm-stat-num" id="umkmStatHidden">0</span>
+          <span class="umkm-stat-label">Disembunyikan</span>
+        </div>
+      </div>
+
+      <div class="items-grid" id="umkmGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ===== SECTION 4: PERSEMBAHAN ===== -->
+    <section id="tabPersembahanSection" style="display: none;">
+      <div class="section-toolbar">
+        <div class="section-info">
+          <h2>Tabel Konfirmasi Persembahan Masuk</h2>
+          <p>Verifikasi bukti transfer dari jemaat untuk persepuluhan, kolekte, pembangunan, dan ucapan syukur.</p>
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-ghost" onclick="exportPersembahanCsv()">
+            📥 Export CSV
+          </button>
+          <button class="btn-primary" onclick="openAddPersembahan()">
+            + Tambah Catatan Persembahan
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Bar Persembahan -->
+      <div class="umkm-admin-stats" id="persembahanStats">
+        <div class="umkm-stat-item">
+          <span class="umkm-stat-num" id="psbStatTotal">0</span>
+          <span class="umkm-stat-label">Total Transaksi</span>
+        </div>
+        <div class="umkm-stat-item" style="border-left: 3px solid #f59e0b;">
+          <span class="umkm-stat-num" id="psbStatPending" style="color: #f59e0b;">0</span>
+          <span class="umkm-stat-label">Menunggu Verifikasi</span>
+        </div>
+        <div class="umkm-stat-item umkm-stat-aktif">
+          <span class="umkm-stat-num" id="psbStatVerified">0</span>
+          <span class="umkm-stat-label">Terverifikasi</span>
+        </div>
+        <div class="umkm-stat-item" style="border-left: 3px solid var(--primary);">
+          <span class="umkm-stat-num" id="psbStatNominal" style="font-size: 1.15rem; color: var(--primary);">Rp 0</span>
+          <span class="umkm-stat-label">Total Nominal (Verif)</span>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="table-filter-bar">
+        <div class="filter-group" style="flex: 2;">
+          <input type="text" id="psbSearchInput" class="form-control" placeholder="🔍 Cari nama pengirim / catatan..." />
+        </div>
+        <div class="filter-group">
+          <select id="psbFilterStatus" class="form-control">
+            <option value="">Semua Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Terverifikasi">Terverifikasi</option>
+            <option value="Ditolak">Ditolak</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <select id="psbFilterJenis" class="form-control">
+            <option value="">Semua Jenis</option>
+            <option value="Kolekte">Kolekte</option>
+            <option value="Persepuluhan">Persepuluhan</option>
+            <option value="Pembangunan">Pembangunan</option>
+            <option value="Ucapan Syukur">Ucapan Syukur</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="admin-table-container">
+        <table class="admin-data-table" id="persembahanTable">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Nama Pengirim</th>
+              <th>Jenis</th>
+              <th>Nominal</th>
+              <th>Bukti Transfer</th>
+              <th>Catatan</th>
+              <th>Status</th>
+              <th style="text-align: right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="persembahanTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 5: BAPTISAN ===== -->
+    <section id="tabBaptisanSection" style="display: none;">
+      <div class="section-toolbar">
+        <div class="section-info">
+          <h2>Manajemen Pendaftaran Baptisan Kudus</h2>
+          <p>Kelola data pendaftar sakramen baptisan selam, periksa berkas, dan perbarui status verifikasi.</p>
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-ghost" onclick="exportBaptisanCsv()">
+            📥 Export CSV
+          </button>
+          <button class="btn-primary" onclick="openAddBaptisan()">
+            + Tambah Pendaftar Baptisan
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Bar Baptisan -->
+      <div class="umkm-admin-stats" id="baptisanStats">
+        <div class="umkm-stat-item">
+          <span class="umkm-stat-num" id="bptStatTotal">0</span>
+          <span class="umkm-stat-label">Total Pendaftar</span>
+        </div>
+        <div class="umkm-stat-item" style="border-left: 3px solid #f59e0b;">
+          <span class="umkm-stat-num" id="bptStatPending" style="color: #f59e0b;">0</span>
+          <span class="umkm-stat-label">Pending</span>
+        </div>
+        <div class="umkm-stat-item" style="border-left: 3px solid #3b82f6;">
+          <span class="umkm-stat-num" id="bptStatApproved" style="color: #3b82f6;">0</span>
+          <span class="umkm-stat-label">Disetujui</span>
+        </div>
+        <div class="umkm-stat-item umkm-stat-aktif">
+          <span class="umkm-stat-num" id="bptStatCompleted">0</span>
+          <span class="umkm-stat-label">Selesai Dibaptis</span>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="table-filter-bar">
+        <div class="filter-group" style="flex: 2;">
+          <input type="text" id="bptSearchInput" class="form-control" placeholder="🔍 Cari nama calon / orang tua..." />
+        </div>
+        <div class="filter-group">
+          <select id="bptFilterStatus" class="form-control">
+            <option value="">Semua Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Disetujui">Disetujui</option>
+            <option value="Selesai">Selesai</option>
+            <option value="Ditolak">Ditolak</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="admin-table-container">
+        <table class="admin-data-table" id="baptisanTable">
+          <thead>
+            <tr>
+              <th>Tgl Daftar</th>
+              <th>Nama Calon Baptis</th>
+              <th>TTL</th>
+              <th>Orang Tua</th>
+              <th>WhatsApp</th>
+              <th>Jadwal Pelaksanaan</th>
+              <th>Berkas</th>
+              <th>Status</th>
+              <th style="text-align: right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="baptisanTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== SECTION 6: PENGUMUMAN ===== -->
+    <section id="tabPengumumanSection" style="display: none;">
+      <div class="section-toolbar">
+        <div class="section-info">
+          <h2>Manajemen Pengumuman Gereja</h2>
+          <p>Kelola warta jemaat, sematkan pengumuman penting (pinned) di paling atas, dan atur kategori publik.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-ghost" onclick="exportPengumumanCsv()">
+            📥 Export CSV
+          </button>
+          <button class="btn-primary" onclick="openAddPengumuman()">
+            + Tambah Pengumuman Baru
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Bar Pengumuman -->
+      <div class="umkm-admin-stats" id="pengumumanStats">
+        <div class="umkm-stat-item">
+          <span class="umkm-stat-num" id="statTotalPengumuman">0</span>
+          <span class="umkm-stat-label">Total Pengumuman</span>
+        </div>
+        <div class="umkm-stat-item" style="border-left: 3px solid #f59e0b;">
+          <span class="umkm-stat-num" id="statPinnedPengumuman" style="color: #fbbf24;">0</span>
+          <span class="umkm-stat-label">📌 Pinned / Penting</span>
+        </div>
+        <div class="umkm-stat-item" style="border-left: 3px solid #3b82f6;">
+          <span class="umkm-stat-num" id="statIbadahPengumuman" style="color: #60a5fa;">0</span>
+          <span class="umkm-stat-label">Ibadah Minggu</span>
+        </div>
+        <div class="umkm-stat-item umkm-stat-aktif">
+          <span class="umkm-stat-num" id="statOtherPengumuman">0</span>
+          <span class="umkm-stat-label">Kategori Lainnya</span>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="table-filter-bar">
+        <div class="filter-group" style="flex: 2;">
+          <input type="text" id="pengumumanSearch" class="form-control" placeholder="🔍 Cari judul, ringkasan, atau isi pengumuman..." />
+        </div>
+        <div class="filter-group">
+          <select id="pengumumanFilterCat" class="form-control">
+            <option value="">Semua Kategori</option>
+            <option value="Ibadah Minggu">Ibadah Minggu</option>
+            <option value="Pemuda">Pemuda / Youth</option>
+            <option value="Bakti Sosial">Bakti Sosial</option>
+            <option value="Doa & Puasa">Doa &amp; Puasa</option>
+            <option value="Pelayanan">Pelayanan</option>
+            <option value="Sekolah Minggu">Sekolah Minggu</option>
+            <option value="Umum">Umum / Lainnya</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <select id="pengumumanFilterPin" class="form-control">
+            <option value="">Semua Prioritas</option>
+            <option value="1">📌 Hanya Pinned / Penting</option>
+            <option value="0">Standar (Non-Pinned)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="admin-table-container">
+        <table class="admin-data-table" id="pengumumanTable">
+          <thead>
+            <tr>
+              <th style="width: 110px;">Prioritas</th>
+              <th style="width: 140px;">Tanggal</th>
+              <th>Judul Pengumuman</th>
+              <th style="width: 140px;">Kategori</th>
+              <th>Ringkasan / Cuplikan</th>
+              <th style="text-align: right; width: 170px;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="pengumumanTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
@@ -244,6 +554,379 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- ===== MODAL UMKM ===== -->
+  <div class="modal-overlay" id="modalUmkm">
+    <div class="modal-card" style="max-width:680px;">
+      <div class="modal-header">
+        <h3 id="modalUmkmTitle">Tambah UMKM Baru</h3>
+        <button type="button" class="modal-close-btn" id="umkmModalCloseBtn">&times;</button>
+      </div>
+      <form id="formUmkm">
+        <div class="modal-body">
+          <input type="hidden" id="umkmId">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="umkmNamaUsaha">Nama Usaha *</label>
+              <input type="text" id="umkmNamaUsaha" class="form-control" placeholder="Contoh: Warung Makan Bu Sari" required>
+            </div>
+            <div class="form-group">
+              <label for="umkmKategori">Kategori *</label>
+              <select id="umkmKategori" class="form-control" required>
+                <option value="">Pilih Kategori</option>
+                <option value="Kuliner">🍽️ Kuliner</option>
+                <option value="Fashion">👗 Fashion</option>
+                <option value="Jasa">🔧 Jasa</option>
+                <option value="Sembako">🛒 Sembako</option>
+                <option value="Elektronik">📱 Elektronik</option>
+                <option value="Pertanian">🌱 Pertanian</option>
+                <option value="Kerajinan">🎨 Kerajinan</option>
+                <option value="Lainnya">📦 Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="umkmNamaPemilik">Nama Pemilik (Jemaat)</label>
+              <input type="text" id="umkmNamaPemilik" class="form-control" placeholder="Contoh: Sari Dewi Kristiani">
+            </div>
+            <div class="form-group">
+              <label for="umkmNoWa">No. HP / WhatsApp *</label>
+              <input type="tel" id="umkmNoWa" class="form-control" placeholder="Contoh: 08123456789" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="umkmAlamat">Alamat / Lokasi Usaha</label>
+            <input type="text" id="umkmAlamat" class="form-control" placeholder="Contoh: Jl. Mawar No. 12, Kediri">
+          </div>
+
+          <div class="form-group">
+            <label for="umkmDeskripsi">Deskripsi Lengkap</label>
+            <textarea id="umkmDeskripsi" class="form-control" rows="4" placeholder="Ceritakan produk/jasa, keunggulan, jam operasional, dll..."></textarea>
+          </div>
+
+          <!-- Upload Gambar -->
+          <div class="form-group">
+            <label>Foto Usaha / Produk</label>
+            <div class="image-upload-wrapper">
+              <div class="image-preview-box" id="umkmPreview">
+                <span class="no-img-text">Belum ada gambar</span>
+              </div>
+              <div class="upload-actions">
+                <label class="file-input-btn">
+                  📁 Unggah File Gambar
+                  <input type="file" id="umkmFile" class="file-input-hidden" accept="image/jpeg,image/png,image/webp">
+                </label>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">atau gunakan URL:</span>
+              </div>
+              <input type="text" id="umkmGambar" class="form-control" placeholder="Path atau URL gambar...">
+            </div>
+          </div>
+
+          <!-- Status Toggle -->
+          <div class="form-group">
+            <label>Status Tampil di Website Publik</label>
+            <div class="umkm-status-toggle-wrap">
+              <button type="button" class="umkm-toggle-btn active" id="umkmToggleAktif" onclick="setUmkmStatus(true)">
+                ✅ Aktif — Tampil di Website
+              </button>
+              <button type="button" class="umkm-toggle-btn" id="umkmToggleSembunyi" onclick="setUmkmStatus(false)">
+                🙈 Sembunyikan
+              </button>
+            </div>
+            <input type="hidden" id="umkmAktif" value="1">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" id="umkmCancelBtn">Batal</button>
+          <button type="submit" class="btn-primary">Simpan UMKM</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL PREVIEW BUKTI TRANSFER & BERKAS ===== -->
+  <div class="modal-overlay" id="modalPreviewBukti">
+    <div class="modal-card" style="max-width: 720px;">
+      <div class="modal-header">
+        <h3 id="modalPreviewTitle">Lihat Bukti Transfer / Berkas Lampiran</h3>
+        <button type="button" class="modal-close-btn" id="closePreviewBtn">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align: center; padding: 20px;">
+        <div style="background: #090d16; border-radius: 8px; padding: 12px; display: inline-flex; justify-content: center; align-items: center; max-width: 100%;">
+          <img id="modalPreviewImg" src="" alt="Bukti Transfer" style="max-width: 100%; max-height: 520px; object-fit: contain; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
+        </div>
+        <div id="modalPreviewDoc" style="display: none; padding: 30px;">
+          <div style="font-size: 3rem; margin-bottom: 12px;">📄</div>
+          <h4 style="color: #fff; margin-bottom: 6px;">Berkas Dokumen / PDF</h4>
+          <p style="margin-bottom: 18px; color: var(--text-muted); font-size: 0.9rem;">Dokumen ini dapat dibuka langsung di tab browser baru atau diunduh ke komputer Anda.</p>
+          <a id="modalPreviewDocLink" href="" target="_blank" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 20px;">
+            📄 Buka Dokumen di Tab Baru ↗
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; gap: 10px;">
+          <a id="modalPreviewDownload" href="" download class="btn-ghost" style="text-decoration: none;">⬇️ Unduh Berkas</a>
+          <a id="modalPreviewExternal" href="" target="_blank" class="btn-ghost" style="text-decoration: none;">↗ Buka Tab Baru</a>
+        </div>
+        <button type="button" class="btn-primary" id="btnTutupPreview">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL DETAIL & VERIFIKASI PERSEMBAHAN ===== -->
+  <div class="modal-overlay" id="modalDetailPersembahan">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3 id="detailPsbTitle">Detail Konfirmasi Persembahan Jemaat</h3>
+        <button type="button" class="modal-close-btn" id="closeDetailPsbBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="detailPersembahanContent" style="padding: 24px;">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" id="btnTutupDetailPsb">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL DETAIL & STATUS BAPTISAN ===== -->
+  <div class="modal-overlay" id="modalDetailBaptisan">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3>Detail Pendaftaran Baptisan Kudus</h3>
+        <button type="button" class="modal-close-btn" id="closeDetailBaptisanBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="detailBaptisanContent" style="padding: 24px;">
+        <!-- Rendered by JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" id="btnTutupDetailBaptisan">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL PENGUMUMAN ===== -->
+  <div class="modal-overlay" id="modalPengumuman">
+    <div class="modal-card" style="max-width: 660px;">
+      <div class="modal-header">
+        <h3 id="modalPengumumanTitle">Tambah Pengumuman Baru</h3>
+        <button type="button" class="modal-close-btn" id="modalPengumumanClose">&times;</button>
+      </div>
+      <form id="formPengumuman">
+        <div class="modal-body">
+          <input type="hidden" id="pengumumanId">
+
+          <div class="form-group">
+            <label for="pengumumanTitle">Judul Pengumuman *</label>
+            <input type="text" id="pengumumanTitle" class="form-control" placeholder="Contoh: Ibadah Kebangunan Rohani & Doa Kesembuhan" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pengumumanDate">Tanggal Pengumuman *</label>
+              <input type="date" id="pengumumanDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="pengumumanCategory">Kategori *</label>
+              <select id="pengumumanCategory" class="form-control" required>
+                <option value="Ibadah Minggu">Ibadah Minggu</option>
+                <option value="Pemuda">Pemuda</option>
+                <option value="Bakti Sosial">Bakti Sosial</option>
+                <option value="Doa & Puasa">Doa &amp; Puasa</option>
+                <option value="Pelayanan">Pelayanan</option>
+                <option value="Sekolah Minggu">Sekolah Minggu</option>
+                <option value="Umum">Umum</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Switch Toggle Pinned -->
+          <div class="form-group">
+            <label>Prioritas Penampilan di Website</label>
+            <div class="toggle-switch-card">
+              <div class="toggle-switch-info">
+                <span class="toggle-switch-title">📌 Pengumuman Penting / Pinned</span>
+                <span class="toggle-switch-sub">Tampilkan di baris paling atas dengan lencana emas dan highlight visual khusus di landing page.</span>
+              </div>
+              <label class="switch-control" for="pengumumanIsPinned">
+                <input type="checkbox" id="pengumumanIsPinned">
+                <span class="switch-track"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pengumumanSummary">Isian Ringkas (Ringkasan Cuplikan Kartu)</label>
+            <input type="text" id="pengumumanSummary" class="form-control" placeholder="Tuliskan 1-2 kalimat teaser untuk kartu pengumuman di landing page...">
+          </div>
+
+          <div class="form-group">
+            <label for="pengumumanContent">Isi Lengkap Pengumuman *</label>
+            <textarea id="pengumumanContent" class="form-control" rows="5" placeholder="Tuliskan detail waktu, tempat pelaksanaan, susunan acara, kontak panitia, atau ayat rujukan..." required></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" id="modalPengumumanCancel">Batal</button>
+          <button type="submit" class="btn-primary">Simpan Pengumuman</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL TAMBAH / EDIT PERSEMBAHAN ===== -->
+  <div class="modal-overlay" id="modalPersembahan">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="modalPersembahanTitle">Tambah Catatan Persembahan</h3>
+        <button type="button" class="modal-close-btn" id="closePersembahanModalBtn">&times;</button>
+      </div>
+      <form id="formPersembahan">
+        <div class="modal-body">
+          <input type="hidden" id="persembahanEditId">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="psbNama">Nama Pengirim / Jemaat *</label>
+              <input type="text" id="psbNama" class="form-control" placeholder="Contoh: Budi Santoso" required>
+            </div>
+            <div class="form-group">
+              <label for="psbJenis">Jenis Persembahan *</label>
+              <select id="psbJenis" class="form-control" required>
+                <option value="Kolekte">Kolekte</option>
+                <option value="Persepuluhan">Persepuluhan</option>
+                <option value="Pembangunan">Pembangunan</option>
+                <option value="Ucapan Syukur">Ucapan Syukur</option>
+                <option value="Misi">Misi</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="psbNominal">Nominal (Rp) *</label>
+              <input type="number" id="psbNominal" class="form-control" placeholder="Contoh: 500000" min="1000" required>
+            </div>
+            <div class="form-group">
+              <label for="psbStatus">Status</label>
+              <select id="psbStatus" class="form-control">
+                <option value="Terverifikasi">Terverifikasi</option>
+                <option value="Pending">Pending</option>
+                <option value="Ditolak">Ditolak</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="psbCatatan">Catatan / Keterangan</label>
+            <textarea id="psbCatatan" class="form-control" rows="3" placeholder="Contoh: Persepuluhan bulan Oktober, ucapan syukur ulang tahun, dll..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="psbBuktiUrl">URL Bukti Transfer (opsional)</label>
+            <input type="text" id="psbBuktiUrl" class="form-control" placeholder="Contoh: uploads/bukti_transfer.jpg atau URL gambar...">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" id="cancelPersembahanBtn">Batal</button>
+          <button type="submit" class="btn-primary">💾 Simpan Persembahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== MODAL TAMBAH / EDIT BAPTISAN ===== -->
+  <div class="modal-overlay" id="modalBaptisan">
+    <div class="modal-card" style="max-width: 660px;">
+      <div class="modal-header">
+        <h3 id="modalBaptisanTitle">Tambah Pendaftar Baptisan</h3>
+        <button type="button" class="modal-close-btn" id="closeBaptisanModalBtn">&times;</button>
+      </div>
+      <form id="formBaptisan">
+        <div class="modal-body">
+          <input type="hidden" id="baptisanEditId">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bptNamaLengkap">Nama Lengkap Calon Baptis *</label>
+              <input type="text" id="bptNamaLengkap" class="form-control" placeholder="Contoh: Jonathan Aditya Pratama" required>
+            </div>
+            <div class="form-group">
+              <label for="bptNoWa">No. HP / WhatsApp *</label>
+              <input type="tel" id="bptNoWa" class="form-control" placeholder="Contoh: 08123456789" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bptTtl">Tempat & Tanggal Lahir</label>
+              <input type="text" id="bptTtl" class="form-control" placeholder="Contoh: Pontianak, 14 Mei 2004">
+            </div>
+            <div class="form-group">
+              <label for="bptOrangTua">Nama Orang Tua / Wali</label>
+              <input type="text" id="bptOrangTua" class="form-control" placeholder="Contoh: Andreas Pratama & Ruth Setiawan">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bptJadwal">Pilihan Gelombang Baptisan *</label>
+              <input type="text" id="bptJadwal" class="form-control" placeholder="Contoh: Gelombang 1 - Minggu, 12 April 2026">
+            </div>
+            <div class="form-group">
+              <label for="bptStatus">Status Pendaftaran</label>
+              <select id="bptStatus" class="form-control">
+                <option value="Pending">⏳ Pending</option>
+                <option value="Disetujui">✅ Disetujui</option>
+                <option value="Selesai">🕊️ Selesai Dibaptis</option>
+                <option value="Ditolak">✕ Ditolak</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bptAlamat">Alamat Domisili</label>
+            <input type="text" id="bptAlamat" class="form-control" placeholder="Contoh: Jl. Merdeka No. 5, Pontianak">
+          </div>
+
+          <div class="form-group">
+            <label for="bptCatatan">Catatan / Keterangan Jemaat</label>
+            <textarea id="bptCatatan" class="form-control" rows="2" placeholder="Catatan khusus dari calon baptis..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="bptCatatanAdmin">Catatan Pastoral (Internal)</label>
+            <input type="text" id="bptCatatanAdmin" class="form-control" placeholder="Catatan internal untuk tim pastoral, jadwal katekisasi, dll...">
+          </div>
+
+          <div class="form-group">
+            <label for="bptBerkasUrl">URL Berkas Identitas (KTP/KK/Akta)</label>
+            <input type="text" id="bptBerkasUrl" class="form-control" placeholder="Contoh: uploads/berkas_ktp.jpg atau URL berkas...">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" id="cancelBaptisanBtn">Batal</button>
+          <button type="submit" class="btn-primary">💾 Simpan Data Baptisan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <script src="admin.js"></script>
+  <script src="admin-umkm.js"></script>
+  <script src="admin-persembahan.js"></script>
+  <script src="admin-baptisan.js"></script>
+  <script src="admin-pengumuman.js"></script>
 </body>
 </html>

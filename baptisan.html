@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendaftaran Baptisan Kudus — GBI Getsemani</title>
+  <meta name="description" content="Pendaftaran Sakramen Baptisan Selam GBI Getsemani secara online. Mengambil komitmen iman mengikuti Kristus." />
+  <link rel="icon" href="./Resource/logo (1).png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="modul.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="modul-header">
+    <div class="modul-header-inner">
+      <a href="./index.html" class="modul-back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="18" height="18"><path d="m15 18-6-6 6-6"/></svg>
+        Kembali ke Website
+      </a>
+      <a href="./index.html" class="modul-brand">
+        <img src="./Resource/logo (1).png" alt="GBI Getsemani" onerror="this.style.display='none'" />
+        <span>GBI Getsemani</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="modul-hero">
+    <div class="modul-hero-glow modul-hero-glow--teal"></div>
+    <div class="modul-hero-glow modul-hero-glow--gold"></div>
+    <div class="modul-hero-content">
+      <span class="modul-eyebrow">🕊️ Sakramen Baptisan Selam</span>
+      <h1 class="modul-hero-title">Pendaftaran Baptisan Kudus</h1>
+      <p class="modul-hero-sub">
+        "Sebab itu pergilah, jadikanlah semua bangsa murid-Ku dan baptislah mereka dalam nama Bapa dan Anak dan Roh Kudus." — Matius 28:19
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== MAIN ===== -->
+  <main class="modul-main" id="main">
+
+    <!-- Card: Info & Syarat -->
+    <section class="card-section">
+      <h2 class="section-title">
+        <span class="section-icon">📖</span>
+        Informasi &amp; Persyaratan Baptisan
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+        <div style="background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 10px;">
+          <h4 style="color: var(--primary); font-size: 1rem; margin-bottom: 8px;">1. Komitmen Pribadi</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+            Telah menerima Tuhan Yesus Kristus sebagai Tuhan dan Juruselamat secara pribadi dan sadar.
+          </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 10px;">
+          <h4 style="color: var(--primary); font-size: 1rem; margin-bottom: 8px;">2. Kelas Pembinaan</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+            Bersedia mengikuti sesi Katekisasi / Pengajaran Dasar Iman sebelum tanggal pelaksanaan baptisan.
+          </p>
+        </div>
+        <div style="background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 10px;">
+          <h4 style="color: var(--primary); font-size: 1rem; margin-bottom: 8px;">3. Berkas Kelengkapan</h4>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+            Melampirkan foto / scan berkas identitas (KTP atau Kartu Keluarga / Akta Kelahiran) untuk pencatatan sertifikat.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card: Form Pendaftaran -->
+    <section class="card-section">
+      <h2 class="section-title">
+        <span class="section-icon">✍️</span>
+        Formulir Pendaftaran Baptisan
+      </h2>
+
+      <div id="bpt-alert-error" class="form-alert form-alert--error"></div>
+
+      <!-- Success State -->
+      <div id="bpt-success" class="success-state" style="display: none;">
+        <div class="success-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="36" height="36">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="success-title">Pendaftaran Baptisan Terkirim!</h3>
+        <p class="success-desc" id="bpt-success-msg">
+          Puji Tuhan, formulir pendaftaran Anda telah kami terima. Tim pastoral GBI Getsemani akan menghubungi nomor WhatsApp Anda untuk konfirmasi jadwal pembinaan dan pelaksanaan baptisan.
+        </p>
+        <button class="btn-secondary-modul" onclick="resetFormBaptisan()">Daftar Calon Lain</button>
+      </div>
+
+      <!-- Main Form -->
+      <form id="formBaptisan" novalidate>
+        <div class="form-grid">
+
+          <!-- Nama Lengkap -->
+          <div class="form-group form-grid--full">
+            <label class="form-label" for="bptNama">
+              Nama Lengkap Calon Baptis <span class="req">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="bptNama" 
+              name="nama_lengkap" 
+              class="form-control" 
+              placeholder="Contoh: Jonathan Aditya Wijaya (sesuai identitas)" 
+              required 
+            />
+            <span class="form-hint">Nama ini akan dicetak pada Sertifikat Baptisan resmi.</span>
+          </div>
+
+          <!-- Tempat Lahir -->
+          <div class="form-group">
+            <label class="form-label" for="bptTempatLahir">
+              Tempat Lahir <span class="req">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="bptTempatLahir" 
+              name="tempat_lahir" 
+              class="form-control" 
+              placeholder="Contoh: Pontianak" 
+              required 
+            />
+          </div>
+
+          <!-- Tanggal Lahir -->
+          <div class="form-group">
+            <label class="form-label" for="bptTanggalLahir">
+              Tanggal Lahir <span class="req">*</span>
+            </label>
+            <input 
+              type="date" 
+              id="bptTanggalLahir" 
+              name="tanggal_lahir" 
+              class="form-control" 
+              required 
+            />
+          </div>
+
+          <!-- Nama Orang Tua -->
+          <div class="form-group">
+            <label class="form-label" for="bptOrangTua">
+              Nama Orang Tua (Ayah / Ibu) <span class="req">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="bptOrangTua" 
+              name="nama_orang_tua" 
+              class="form-control" 
+              placeholder="Contoh: Bpk. Andreas Wijaya & Ibu Maria" 
+              required 
+            />
+          </div>
+
+          <!-- No WhatsApp -->
+          <div class="form-group">
+            <label class="form-label" for="bptWa">
+              No. WhatsApp Aktif <span class="req">*</span>
+            </label>
+            <div class="input-icon-wrap">
+              <span class="input-prefix">+62</span>
+              <input 
+                type="tel" 
+                id="bptWa" 
+                name="no_wa" 
+                class="form-control form-control--with-prefix" 
+                placeholder="81234567890" 
+                required 
+              />
+            </div>
+            <span class="form-hint">Tim pastoral akan menghubungi Anda via WhatsApp ini.</span>
+          </div>
+
+          <!-- Pilihan Tanggal Pelaksanaan -->
+          <div class="form-group">
+            <label class="form-label" for="bptJadwal">
+              Pilihan Tanggal Pelaksanaan Baptisan <span class="req">*</span>
+            </label>
+            <select id="bptJadwal" name="jadwal_baptisan" class="form-control" required>
+              <option value="">-- Pilih Jadwal Pelaksanaan --</option>
+              <option value="Gelombang 1 - Minggu, 12 April 2026 (Paskah)">Gelombang 1 - Minggu, 12 April 2026 (Paskah)</option>
+              <option value="Gelombang 2 - Minggu, 14 Juni 2026">Gelombang 2 - Minggu, 14 Juni 2026</option>
+              <option value="Gelombang 3 - Minggu, 16 Agustus 2026">Gelombang 3 - Minggu, 16 Agustus 2026</option>
+              <option value="Gelombang 4 - Minggu, 20 Desember 2026 (Natal)">Gelombang 4 - Minggu, 20 Desember 2026 (Natal)</option>
+              <option value="Jadwal Khusus (Akan Dikoordinasikan)">Jadwal Khusus (Akan Dikoordinasikan)</option>
+            </select>
+          </div>
+
+          <!-- Alamat Domisili -->
+          <div class="form-group">
+            <label class="form-label" for="bptAlamat">
+              Alamat Domisili Saat Ini
+            </label>
+            <input 
+              type="text" 
+              id="bptAlamat" 
+              name="alamat" 
+              class="form-control" 
+              placeholder="Contoh: Jl. Ahmad Yani No. 12, Pontianak" 
+            />
+          </div>
+
+          <!-- Upload Berkas (KTP/Akta/KK) -->
+          <div class="form-group form-grid--full">
+            <label class="form-label">
+              Upload Berkas Identitas (KTP / Kartu Keluarga / Akta Kelahiran) <span class="req">*</span>
+            </label>
+            <div class="file-drop-area" id="bptDropArea">
+              <input type="file" id="bptFileInput" accept="image/*,.pdf" style="display: none;" />
+              <input type="hidden" id="bptBerkasUrl" name="berkas_url" />
+
+              <div class="file-drop-content" id="bptDropContent">
+                <span class="file-drop-icon">📁</span>
+                <span class="file-drop-title">Klik atau seret foto berkas identitas ke sini</span>
+                <span class="file-drop-sub">Format JPG, PNG, atau PDF (Maksimal 8 MB)</span>
+              </div>
+
+              <!-- Preview State -->
+              <div id="bptFilePreview" class="file-preview-mini" style="display: none;">
+                <div class="file-preview-info">
+                  <span style="font-size: 1.3rem;">📄</span>
+                  <span class="file-preview-name" id="bptFileName">nama_file.jpg</span>
+                </div>
+                <button type="button" class="btn-remove-file" onclick="removeBaptisanFile(event)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </div>
+            </div>
+            <span class="form-hint">Digunakan khusus oleh tim administrasi gereja untuk keakuratan data sertifikat baptisan.</span>
+          </div>
+
+          <!-- Catatan / Permohonan Khusus -->
+          <div class="form-group form-grid--full">
+            <label class="form-label" for="bptCatatan">
+              Catatan / Riwayat Gereja Sebelumnya (Opsional)
+            </label>
+            <textarea 
+              id="bptCatatan" 
+              name="catatan" 
+              class="form-control" 
+              placeholder="Ceritakan singkat latar belakang gereja Anda atau kebutuhan khusus (misal: pakaian khusus, kendala fisik, dll.)"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group form-grid--full">
+            <button type="submit" class="btn-submit-modul" id="btnSubmitBaptisan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              Kirim Pendaftaran Baptisan
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="modul-footer">
+    <p>&copy; 2026 GBI Getsemani. Semua Hak Dilindungi. Dilayani dengan sukacita dan kasih Kristus.</p>
+  </footer>
+
+  <script>
+    // --- File Upload Handler ---
+    const dropArea = document.getElementById('bptDropArea');
+    const fileInput = document.getElementById('bptFileInput');
+    const previewEl = document.getElementById('bptFilePreview');
+    const dropContent = document.getElementById('bptDropContent');
+    const fileNameEl = document.getElementById('bptFileName');
+    const berkasUrlEl = document.getElementById('bptBerkasUrl');
+    const errEl = document.getElementById('bpt-alert-error');
+
+    dropArea.addEventListener('click', () => fileInput.click());
+
+    ['dragenter', 'dragover'].forEach(ev => {
+      dropArea.addEventListener(ev, e => { e.preventDefault(); dropArea.classList.add('drag-over'); });
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+      dropArea.addEventListener(ev, e => { e.preventDefault(); dropArea.classList.remove('drag-over'); });
+    });
+
+    dropArea.addEventListener('drop', e => {
+      if (e.dataTransfer.files.length) {
+        uploadBerkas(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        uploadBerkas(fileInput.files[0]);
+      }
+    });
+
+    async function uploadBerkas(file) {
+      hideAlert();
+      dropContent.innerHTML = `<span style="color: var(--primary);">⏳ Mengupload ${file.name}...</span>`;
+
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('tipe', 'baptisan');
+
+      try {
+        const res = await fetch('./api/upload-publik.php', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          berkasUrlEl.value = data.url;
+          fileNameEl.textContent = file.name;
+          dropContent.style.display = 'none';
+          previewEl.style.display = 'flex';
+        } else {
+          showFormError(data.message || 'Gagal mengupload berkas. Pastikan format JPG/PNG/PDF.');
+          resetUploadState();
+        }
+      } catch (err) {
+        showFormError('Terjadi kesalahan jaringan saat upload.');
+        resetUploadState();
+      }
+    }
+
+    function resetUploadState() {
+      dropContent.style.display = 'flex';
+      dropContent.innerHTML = `
+        <span class="file-drop-icon">📁</span>
+        <span class="file-drop-title">Klik atau seret foto berkas identitas ke sini</span>
+        <span class="file-drop-sub">Format JPG, PNG, atau PDF (Maksimal 8 MB)</span>
+      `;
+      previewEl.style.display = 'none';
+      berkasUrlEl.value = '';
+    }
+
+    window.removeBaptisanFile = function(e) {
+      e.stopPropagation();
+      fileInput.value = '';
+      resetUploadState();
+    };
+
+    function showFormError(msg) {
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function hideAlert() {
+      errEl.style.display = 'none';
+    }
+
+    // --- Form Submit Handler ---
+    const form = document.getElementById('formBaptisan');
+    const submitBtn = document.getElementById('btnSubmitBaptisan');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const nama_lengkap    = document.getElementById('bptNama').value.trim();
+      const tempat_lahir    = document.getElementById('bptTempatLahir').value.trim();
+      const tanggal_lahir   = document.getElementById('bptTanggalLahir').value;
+      const nama_orang_tua  = document.getElementById('bptOrangTua').value.trim();
+      const no_wa_raw       = document.getElementById('bptWa').value.replace(/[^0-9]/g, '');
+      const jadwal_baptisan = document.getElementById('bptJadwal').value;
+      const alamat          = document.getElementById('bptAlamat').value.trim();
+      const berkas_url      = berkasUrlEl.value;
+      const catatan         = document.getElementById('bptCatatan').value.trim();
+
+      if (!nama_lengkap || !tempat_lahir || !tanggal_lahir || !nama_orang_tua || !no_wa_raw || !jadwal_baptisan) {
+        showFormError('Harap lengkapi semua field yang bertanda bintang (*).');
+        return;
+      }
+
+      if (!berkas_url) {
+        showFormError('Harap upload foto/scan berkas identitas (KTP/KK/Akta) terlebih dahulu.');
+        return;
+      }
+
+      const no_wa = (no_wa_raw.startsWith('0') ? '62' + no_wa_raw.slice(1) : (no_wa_raw.startsWith('62') ? no_wa_raw : '62' + no_wa_raw));
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Mengirim Pendaftaran...';
+
+      try {
+        const payload = {
+          action: 'submit',
+          nama_lengkap,
+          tempat_lahir,
+          tanggal_lahir,
+          nama_orang_tua,
+          no_wa,
+          jadwal_baptisan,
+          alamat,
+          berkas_url,
+          catatan
+        };
+
+        const res = await fetch('./api/baptisan.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.ok && result.success) {
+          document.getElementById('bpt-success-msg').textContent = result.message;
+          form.style.display = 'none';
+          document.getElementById('bpt-success').style.display = 'flex';
+          document.getElementById('bpt-success').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          showFormError(result.message || 'Gagal mengirim pendaftaran.');
+        }
+      } catch (err) {
+        showFormError('Terjadi kesalahan jaringan. Pastikan koneksi atau server aktif.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          Kirim Pendaftaran Baptisan
+        `;
+      }
+    });
+
+    window.resetFormBaptisan = function() {
+      form.reset();
+      resetUploadState();
+      form.style.display = 'block';
+      document.getElementById('bpt-success').style.display = 'none';
+    };
+  </script>
+</body>
+</html>

@@ -141,25 +141,49 @@ btnLogout.addEventListener('click', async () => {
   }
 });
 
-// ===== TABS SWITCHER =====
-tabKegiatanBtn.addEventListener('click', () => {
-  tabKegiatanBtn.classList.add('active');
-  tabKhotbahBtn.classList.remove('active');
-  tabKegiatanSection.style.display = 'block';
-  tabKhotbahSection.style.display = 'none';
-});
+// ===== TABS SWITCHER (6 MODUL UTAMA) =====
+const ALL_ADMIN_TABS = [
+  { key: 'kegiatan', btnId: 'tabKegiatanBtn', secId: 'tabKegiatanSection', load: () => fetchKegiatan() },
+  { key: 'khotbah', btnId: 'tabKhotbahBtn', secId: 'tabKhotbahSection', load: () => fetchKhotbah() },
+  { key: 'pengumuman', btnId: 'tabPengumumanBtn', secId: 'tabPengumumanSection', load: () => typeof fetchPengumuman === 'function' && fetchPengumuman() },
+  { key: 'umkm', btnId: 'tabUmkmBtn', secId: 'tabUmkmSection', load: () => typeof fetchUmkm === 'function' && fetchUmkm() },
+  { key: 'persembahan', btnId: 'tabPersembahanBtn', secId: 'tabPersembahanSection', load: () => typeof fetchPersembahan === 'function' && fetchPersembahan() },
+  { key: 'baptisan', btnId: 'tabBaptisanBtn', secId: 'tabBaptisanSection', load: () => typeof fetchBaptisan === 'function' && fetchBaptisan() }
+];
 
-tabKhotbahBtn.addEventListener('click', () => {
-  tabKhotbahBtn.classList.add('active');
-  tabKegiatanBtn.classList.remove('active');
-  tabKhotbahSection.style.display = 'block';
-  tabKegiatanSection.style.display = 'none';
+window.switchAdminTab = function(activeKey) {
+  ALL_ADMIN_TABS.forEach(t => {
+    const btn = document.getElementById(t.btnId);
+    const sec = document.getElementById(t.secId);
+    if (t.key === activeKey) {
+      if (btn) btn.classList.add('active');
+      if (sec) sec.style.display = 'block';
+      if (typeof t.load === 'function') t.load();
+    } else {
+      if (btn) btn.classList.remove('active');
+      if (sec) sec.style.display = 'none';
+    }
+  });
+};
+
+ALL_ADMIN_TABS.forEach(t => {
+  const btn = document.getElementById(t.btnId);
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchAdminTab(t.key);
+    });
+  }
 });
 
 // ===== LOAD ALL DATA =====
 function loadAllData() {
   fetchKegiatan();
   fetchKhotbah();
+  if (typeof fetchPengumuman === 'function') fetchPengumuman();
+  if (typeof fetchUmkm === 'function') fetchUmkm();
+  if (typeof fetchPersembahan === 'function') fetchPersembahan();
+  if (typeof fetchBaptisan === 'function') fetchBaptisan();
 }
 
 // ===== KEGIATAN LOGIC =====
@@ -176,6 +200,9 @@ async function fetchKegiatan() {
 }
 
 function renderKegiatan() {
+  const badge = document.getElementById('badgeKegiatan');
+  if (badge) badge.textContent = kegiatanList.length;
+
   if (!kegiatanList.length) {
     kegiatanGrid.innerHTML = `
       <div class="empty-state">
@@ -355,6 +382,9 @@ async function fetchKhotbah() {
 }
 
 function renderKhotbah() {
+  const badge = document.getElementById('badgeKhotbah');
+  if (badge) badge.textContent = khotbahList.length;
+
   if (!khotbahList.length) {
     khotbahGrid.innerHTML = `
       <div class="empty-state">

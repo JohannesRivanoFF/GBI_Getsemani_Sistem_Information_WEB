@@ -1,0 +1,9 @@
+node_modules/
+
+# Data formulir admin dan berkas unggahan berisi data jemaat.
+/data/*.json
+/uploads/*
+!/uploads/.gitkeep
+
+# QR pembayaran menunggu verifikasi sebelum dipublikasikan.
+/Resource/qris-gbi-getsemani.jpg

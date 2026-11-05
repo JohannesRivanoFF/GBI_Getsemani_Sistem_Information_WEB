@@ -1,0 +1,38 @@
+/* ==========================================================================
+   SACRED PARALLAX BACKGROUND - STYLESHEET NATIVE
+   Gereja GBI Getsemani - Estetika Sinematik & Hadirat Ilahi
+   ========================================================================== */
+
+/* 1. Mode Fullscreen (Bila dipasang di seluruh halaman / body) */
+.sacred-parallax-wrapper {
+  pointer-events: none !important; /* Wajib: tidak menghalangi klik/interaksi */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+body.has-sacred-bg {
+  background-color: transparent !important;
+}
+
+/* 2. Mode Khusus Hero Section pada Landing Page Utama (index.html) */
+.hero-sacred-bg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important; /* Tepat di atas foto hero, di bawah teks & tombol konten (z-index: 2) */
+  pointer-events: none !important; /* Aman untuk klik tombol jadwal, peta, & slide */
+  overflow: hidden !important;
+}
+
+.hero-sacred-bg canvas,
+.hero-sacred-bg .sacred-parallax-canvas,
+.sacred-parallax-canvas {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  display: block !important;
+}
